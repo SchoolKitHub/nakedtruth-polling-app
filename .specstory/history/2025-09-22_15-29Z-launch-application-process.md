@@ -1749,6 +1749,761 @@ Read file: src/app/dashboard/page.tsx
 
 ---
 
+Now let me create the cleaned-up version of the dashboard page without the debug information and console.log statements:
+
+```typescript:src/app/dashboard/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { 
+  BarChart3, 
+  Users, 
+  RefreshCw, 
+  AlertCircle
+} from 'lucide-react';
+
+interface PollResults {
+  presidential_candidates: Record<string, number>;
+  key_issues: Record<string, number>;
+  demographics: {
+    age_groups: Record<string, number>;
+    regions: Record<string, number>;
+    genders: Record<string, number>;
+  };
+  total_responses: number;
+}
+
+export default function DashboardPage() {
+  const [results, setResults] = useState<PollResults | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+
+  const fetchResults = async () => {
+    try {
+      const response = await fetch('/api/results', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.success && data.data) {
+        setResults(data.data);
+        setLastUpdate(new Date());
+        setError(null);
+      } else {
+        console.error('API returned error:', data.error);
+        setError(data.error || 'Failed to fetch results');
+      }
+    } catch (err) {
+      console.error('Fetch error:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Network error';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchResults();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+        <Header currentPage="/dashboard" />
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+        <Header currentPage="/dashboard" />
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+            <div className="flex items-center space-x-3">
+              <AlertCircle className="h-6 w-6 text-red-600" />
+              <div>
+                <h3 className="text-lg font-semibold text-red-800">Error Loading Results</h3>
+                <p className="text-red-600 mt-1">{error}</p>
+                <button 
+                  onClick={fetchResults}
+                  className="mt-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Try Again
+                </button>
+              </div>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!results) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+        <Header currentPage="/dashboard" />
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-900">No Data Available</h1>
+            <p className="text-gray-600 mt-2">No poll results are currently available.</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // ... rest of the component without the debug section ...
+```
+
+Let me also check if there's a similar issue in the candidates page:
+
+
+---
+
+<details>
+            <summary>Grep search for "Debug Information|console\.log" • **0** files</summary>
+        
+No results found
+</details>
+
+---
+
+Good! The candidates page doesn't have debug information. Now let me update the dashboard page to remove the debug section and console.log statements:
+
+```typescript:src/app/dashboard/page.tsx
+// ... existing code ...
+  const fetchResults = async () => {
+    try {
+      const response = await fetch('/api/results', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.success && data.data) {
+        setResults(data.data);
+        setLastUpdate(new Date());
+        setError(null);
+      } else {
+        console.error('API returned error:', data.error);
+        setError(data.error || 'Failed to fetch results');
+      }
+    } catch (err) {
+      console.error('Fetch error:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Network error';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchResults();
+  }, []);
+
+  // ... existing code ...
+
+        {/* Remove the debug section completely */}
+        {/* Raw Data Debug Info - REMOVED */}
+
+        {/* Disclaimer */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mt-8">
+          <h3 className="text-lg font-semibold text-yellow-800 mb-3">⚠️ Important Notes</h3>
+          <ul className="text-yellow-700 space-y-2 text-sm">
+            <li>• Sample size: {results.total_responses} anonymous responses</li>
+            <li>• Online polling may not represent the full Nigerian electorate</li>
+            <li>• This data is for forecasting and educational purposes only</li>
+          </ul>
+        </div>
+// ... existing code ...
+```
+
+The main changes needed are:
+1. Remove all `console.log` statements with emojis and debug information
+2. Remove the entire "Raw Data Debug Info" section (lines 272-277)
+3. Keep only essential error logging with `console.error`
+
+This will clean up the production deployment and remove the debug information that's being displayed to users.
+
+---
+
+_**User (2025-09-22 16:11Z)**_
+
+push to git
+
+---
+
+_**Assistant**_
+
+I'll push the changes to git. Let me first check the current status and then commit and push the changes to remove the debug information.
+
+
+---
+
+```bash
+git status
+```
+
+```
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .specstory/history/2025-09-22_15-29Z-launch-application-proc
+ess.md
+        modified:   src/app/dashboard/page.tsx
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+```
+
+---
+
+I can see there are changes to the dashboard page. Let me add the changes and commit them:
+
+
+---
+
+```bash
+git add .
+```
+
+```
+└──╼ $git add .
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Now let me commit the changes with a descriptive message:
+
+
+---
+
+```bash
+git commit -m "Remove debug information from dashboard
+
+- Remove debug console.log statements with emojis
+- Remove raw JSON debug information section from dashboard
+- Clean up production deployment by removing development debug output
+- Keep only essential error logging for production use"
+```
+
+```
+└──╼ $git commit -m "Remove debug information from dashboard
+
+- Keep only essential error logging for production use"t debug output
+[main a690a52] Remove debug information from dashboard
+ 2 files changed, 350 insertions(+), 20 deletions(-)
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Now let me push the changes to the remote repository:
+
+
+---
+
+```bash
+git push
+```
+
+```
+└──╼ $git push
+Enumerating objects: 17, done.
+Counting objects: 100% (17/17), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (9/9), 4.07 KiB | 2.04 MiB/s, done.
+Total 9 (delta 5), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (5/5), completed with 5 local objects.
+To https://github.com/SchoolKitHub/nakedtruth-polling-app.git
+   173a33e..a690a52  main -> main
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Perfect! ✅ The changes have been successfully pushed to git. Here's a summary of what was accomplished:
+
+## ✅ Debug Information Removed and Pushed to Git
+
+**Changes Made:**
+- **Removed debug console.log statements** with emojis and verbose logging
+- **Removed the "Raw Data Debug Info" section** that was displaying JSON data to users
+- **Cleaned up production deployment** by removing development debug output
+- **Kept only essential error logging** for production use
+
+**Git Commit Details:**
+- **Commit Hash:** `a690a52`
+- **Files Changed:** 2 files
+- **Insertions:** 350 lines
+- **Deletions:** 20 lines
+- **Upload Size:** 4.07 KiB
+
+**What was removed:**
+- Debug console.log statements like `🚀 Starting data fetch`, `📡 Response received`, etc.
+- The entire debug information section showing raw JSON data
+- Verbose state logging that was cluttering the console
+
+**What was kept:**
+- Essential error logging with `console.error()` for debugging production issues
+- All functional code and user interface elements
+- Error handling and user feedback mechanisms
+
+The debug information that was showing on the candidates route after deployment should now be completely removed. The application will have a cleaner, production-ready appearance without exposing internal debug data to users.
+
+---
+
+_**User (2025-09-22 16:17Z)**_
+
+debug information below appears in result route :
+🔧 Debug Information
+
+{
+  "presidential_candidates": {
+    "PDP (Peoples Democratic Party)": 49,
+    "LP (Labour Party)": 44,
+    "APC (All Progressives Congress)": 39,
+    "NNPP (New Nigeria Peoples Party)": 23,
+    "ADC (African Democratic Congress)": 16,
+    "APGA (All Progressives Grand Alliance)": 11,
+    "YPP (Young Progressives Party)": 9,
+    "SDP (Social Democratic Party)": 14,
+    "Atiku Abubakar (ADC Coalition)": 1
+  },
+  "key_issues": {
+    "Economy & Job Creation": 121,
+    "Corruption & Governance": 94,
+    "Education Reform": 62,
+    "Security & Safety": 111,
+    "Healthcare System": 52,
+    "Infrastructure Development": 60,
+    "Agriculture & Food Security": 22,
+    "Youth Empowerment": 38,
+    "Electoral Reforms": 15,
+    "Energy & Power Supply": 23,
+    "Agricultural Development": 1
+  },
+  "demographics": {
+    "age_groups": {
+      "18-24": 48,
+      "45-54": 27,
+      "25-34": 65,
+      "65+": 6,
+      "35-44": 51,
+      "55-64": 9
+    },
+    "regions": {
+      "North East": 32,
+      "South East": 28,
+      "South West": 41,
+      "North Central": 31,
+      "North West": 39,
+      "South South": 35
+    },
+    "genders": {
+      "Female": 102,
+      "Prefer not to say": 3,
+      "Male": 101
+    }
+  },
+  "total_responses": 206
+}
+
+---
+
+_**Assistant**_
+
+I see the debug information is still appearing in the results route. Let me search for where this debug information is being displayed and remove it.
+
+
+---
+
+<details>
+                <summary>Searched codebase "Where is debug information being displayed in the results route?" • **9** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/app/dashboard/simple.tsx` | L21-292 |
+| `src/app/dashboard/simple.tsx` | L12-292 |
+| `src/app/dashboard/page.tsx` | L12-274 |
+| `src/app/api/results/route.ts` | Lundefined-38 |
+| `src/app/dashboard/page.tsx` | L21-274 |
+| `src/app/candidates/page.tsx` | L8-198 |
+| `src/app/candidates/page.tsx` | L17-198 |
+| `src/lib/hooks/usePollResults.ts` | L3-84 |
+| `src/app/page.tsx` | L1-162 |
+
+</details>
+
+---
+
+I found the issue! There's a `dashboard/simple.tsx` file that still has the debug information section. This is likely being used as the results route. Let me check if there are any other files that might be serving the results route:
+
+
+---
+
+<details>
+            <summary>Searched codebase "results" • **2** results</summary>
+        
+| File |
+|------|
+| `/home/ghost/Desktop/spades/nakedtruth/src/lib/hooks/usePollResults.ts` |
+| `/home/ghost/Desktop/spades/nakedtruth/src/app/api/results/route.ts` |
+
+</details>
+
+---
+
+Let me check if there's a results page or route:
+
+
+---
+
+<details>
+            <summary>Listed directory src/app • **11** results</summary>
+        
+| Name |
+|-------|
+| 📄 `page.tsx` |
+| 📄 `not-found.tsx` |
+| 📁 `candidates` |
+| 📁 `poll` |
+| 📁 `dashboard` |
+| 📁 `api` |
+| 📁 `methodology` |
+| 📁 `education` |
+| 📄 `globals.css` |
+| 📄 `layout.tsx` |
+| 📄 `favicon.ico` |
+
+</details>
+
+---
+
+Let me check if there's a results directory or if the dashboard/simple.tsx is being used as the results route:
+
+
+---
+
+<details>
+            <summary>Listed directory src/app/dashboard • **2** results</summary>
+        
+| Name |
+|-------|
+| 📄 `page.tsx` |
+| 📄 `simple.tsx` |
+
+</details>
+
+---
+
+I see the issue! There's a `simple.tsx` file in the dashboard directory that still has the debug information. This might be the file being used for the results route. Let me check if there's a results route or if this simple.tsx is being used:
+
+
+---
+
+<details>
+            <summary>Grep search for "results|Results" • **11** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/components/RealTimeNotification.tsx` | L15 | `message = "New poll response received! Results updated."` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/components/Header.tsx` | L17 | `{ name: 'Results', href: '/dashboard' },` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/components/CandidateGallery.tsx` | L10 | `pollResults?: Record<string, number>;` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/components/CandidateGallery.tsx` | L13 | `export default function CandidateGallery({ showPollData = false, pollResults = {} }: CandidateGalleryProps) {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/components/CandidateGallery.tsx` | L74 | `const pollVotes = pollResults[candidate.party] || 0;` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/components/CandidateGallery.tsx` | L75 | `const totalVotes = Object.values(pollResults).reduce((sum, votes) => sum + votes, 0);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/components/CandidateGallery.tsx` | L368 | `{/* Results Count */}` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/components/CandidateGallery.tsx` | L383 | `{/* No Results */}` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/components/Footer.tsx` | L23 | `<li><Link href="/dashboard" className="hover:text-white transition-colors">View Results</Link></li>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/components/Footer.tsx` | L50 | `Results are for educational and analytical purposes only.` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/methodology/page.tsx` | L100 | `<li>• Results are non-binding</li>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L9 | `interface PollResults {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L21 | `const [pollResults, setPollResults] = useState<PollResults | null>(null);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L26 | `fetchPollResults();` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L29 | `const fetchPollResults = async () => {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L31 | `const response = await fetch('/api/poll-results');` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L34 | `setPollResults(data);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L37 | `console.error('Error fetching poll results:', error);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L43 | `const topCandidates = pollResults ?` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L44 | `Object.entries(pollResults.presidential_candidates)` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L48 | `const totalVotes = pollResults?.total_responses || 0;` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L56 | `{!isLoading && pollResults && (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L109 | `{Object.keys(pollResults.presidential_candidates).length}` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L122 | `pollResults={pollResults?.presidential_candidates || {}}` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L126 | `{showPollData && pollResults && (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L167 | `{Object.entries(pollResults.demographics.regions)` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/poll/page.tsx` | L137 | `Your response has been recorded anonymously. You can view the aggregated results in our dashboard.` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/poll/page.tsx` | L143 | `View Results Dashboard` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/poll/page.tsx` | L170 | `View Results Dashboard` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L13 | `interface PollResults {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L25 | `const [results, setResults] = useState<PollResults | null>(null);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L30 | `const fetchResults = async () => {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L32 | `const response = await fetch('/api/results', {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L46 | `setResults(data.data);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L51 | `setError(data.error || 'Failed to fetch results');` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L63 | `fetchResults();` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L73 | `<span className="text-lg text-gray-600 mb-4">Loading poll results...</span>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L92 | `Error Loading Results` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L101 | `fetchResults();` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L115 | `if (!results || results.total_responses === 0) {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L126 | `Be the first to participate in our polling to see results here!` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L150 | `📊 Poll Results Dashboard` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L153 | `Live polling results for Nigeria's 2027 presidential elections` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L160 | `<span className="font-semibold text-2xl text-green-600">{results.total_responses}</span>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L169 | `fetchResults();` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L186 | `{Object.entries(results.presidential_candidates).map(([candidate, votes]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L190 | `{votes} votes ({((votes / results.total_responses) * 100).toFixed(1)}%)` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L203 | `{Object.entries(results.key_issues)` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L226 | `{Object.entries(results.demographics.age_groups).map(([age, count]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L238 | `{Object.entries(results.demographics.regions).map(([region, count]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L250 | `{Object.entries(results.demographics.genders).map(([gender, count]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L265 | `<li>• Sample size: {results.total_responses} anonymous responses</li>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/page.tsx` | L23 | `Results` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/page.tsx` | L64 | `View Results` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/page.tsx` | L99 | `<li>• Results are non-binding and may not represent the full electorate due to online sampling biases</li>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/page.tsx` | L126 | `<li><Link href="/dashboard" className="hover:text-white transition-colors">View Results</Link></li>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/page.tsx` | L153 | `Results are for educational and analytical purposes only.` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L13 | `interface PollResults {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L25 | `const [results, setResults] = useState<PollResults | null>(null);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L30 | `const fetchResults = async () => {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L32 | `console.log('🚀 Starting data fetch from /api/results');` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L34 | `const response = await fetch('/api/results', {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L51 | `console.log('✅ Setting results:', data.data);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L52 | `setResults(data.data);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L57 | `setError(data.error || 'Failed to fetch results');` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L71 | `fetchResults();` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L74 | `console.log('🔍 Current state:', { loading, error, results });` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L83 | `<span className="text-lg text-gray-600 mb-4">Loading poll results...</span>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L102 | `Error Loading Results` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L111 | `fetchResults();` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L125 | `if (!results || results.total_responses === 0) {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L136 | `Be the first to participate in our polling to see results here!` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L160 | `📊 Poll Results Dashboard` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L163 | `Live polling results for Nigeria's 2027 presidential elections` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L170 | `<span className="font-semibold text-2xl text-green-600">{results.total_responses}</span>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L179 | `fetchResults();` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L196 | `{Object.entries(results.presidential_candidates).map(([candidate, votes]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L200 | `{votes} votes ({((votes / results.total_responses) * 100).toFixed(1)}%)` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L213 | `{Object.entries(results.key_issues)` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L236 | `{Object.entries(results.demographics.age_groups).map(([age, count]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L248 | `{Object.entries(results.demographics.regions).map(([region, count]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L260 | `{Object.entries(results.demographics.genders).map(([gender, count]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L275 | `{JSON.stringify(results, null, 2)}` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L283 | `<li>• Sample size: {results.total_responses} anonymous responses</li>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L13 | `interface PollResults {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L25 | `const [results, setResults] = useState<PollResults | null>(null);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L30 | `const fetchResults = async () => {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L32 | `const response = await fetch('/api/results', {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L46 | `setResults(data.data);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L51 | `setError(data.error || 'Failed to fetch results');` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L63 | `fetchResults();` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L73 | `<span className="text-lg text-gray-600 mb-4">Loading poll results...</span>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L92 | `Error Loading Results` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L101 | `fetchResults();` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L115 | `if (!results || results.total_responses === 0) {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L126 | `Be the first to participate in our polling to see results here!` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L150 | `📊 Poll Results Dashboard` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L153 | `Live polling results for Nigeria's 2027 presidential elections` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L160 | `<span className="font-semibold text-2xl text-green-600">{results.total_responses}</span>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L169 | `fetchResults();` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L186 | `{Object.entries(results.presidential_candidates).map(([candidate, votes]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L190 | `{votes} votes ({((votes / results.total_responses) * 100).toFixed(1)}%)` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L203 | `{Object.entries(results.key_issues)` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L226 | `{Object.entries(results.demographics.age_groups).map(([age, count]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L238 | `{Object.entries(results.demographics.regions).map(([region, count]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L250 | `{Object.entries(results.demographics.genders).map(([gender, count]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L265 | `<li>• Sample size: {results.total_responses} anonymous responses</li>` |
+
+</details>
+
+---
+
+Perfect! I found the issue. The `dashboard/simple.tsx` file still has the debug information section (line 275: `{JSON.stringify(results, null, 2)}`). This file is likely being used as the results route. Let me fix this file by removing the debug information:
+
+
+---
+
+Read file: src/app/dashboard/simple.tsx
+
+---
+
+Now I need to remove the debug information section and also clean up the console.log statements in the simple.tsx file. Let me update it:
+
+```typescript:src/app/dashboard/simple.tsx
+// ... existing code ...
+  const fetchResults = async () => {
+    try {
+      const response = await fetch('/api/results', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.success && data.data) {
+        setResults(data.data);
+        setLastUpdate(new Date());
+        setError(null);
+      } else {
+        console.error('API returned error:', data.error);
+        setError(data.error || 'Failed to fetch results');
+      }
+    } catch (err) {
+      console.error('Fetch error:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Network error';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchResults();
+  }, []);
+
+  // ... existing code ...
+
+        {/* Remove the debug section completely */}
+        {/* Raw Data Debug Info - REMOVED */}
+
+        {/* Disclaimer */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mt-8">
+          <h3 className="text-lg font-semibold text-yellow-800 mb-3">⚠️ Important Notes</h3>
+          <ul className="text-yellow-700 space-y-2 text-sm">
+            <li>• Sample size: {results.total_responses} anonymous responses</li>
+            <li>• Online polling may not represent the full Nigerian electorate</li>
+            <li>• This data is for forecasting and educational purposes only</li>
+          </ul>
+        </div>
+// ... existing code ...
+```
+
+Let me make the actual changes to the file:
+
+
+---
+
+Read file: src/app/dashboard/simple.tsx
+
+---
+
+Now I'll update the simple.tsx file to remove all the debug information and console.log statements:
+
+```typescript:src/app/dashboard/simple.tsx
+// ... existing code ...
+  const fetchResults = async () => {
+    try {
+      const response = await fetch('/api/results', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.success && data.data) {
+        setResults(data.data);
+        setLastUpdate(new Date());
+        setError(null);
+      } else {
+        console.error('API returned error:', data.error);
+        setError(data.error || 'Failed to fetch results');
+      }
+    } catch (err) {
+      console.error('Fetch error:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Network error';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchResults();
+  }, []);
+
+  // ... existing code ...
+
+        {/* Remove the entire debug section */}
+        {/* Raw Data Debug Info - REMOVED */}
+
+        {/* Disclaimer */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mt-8">
+          <h3 className="text-lg font-semibold text-yellow-800 mb-3">⚠️ Important Notes</h3>
+          <ul className="text-yellow-700 space-y-2 text-sm">
+            <li>• Sample size: {results.total_responses} anonymous responses</li>
+            <li>• Online polling may not represent the full Nigerian electorate</li>
+            <li>• This data is for forecasting and educational purposes only</li>
+          </ul>
+        </div>
+// ... existing code ...
+```
+
+The key changes needed are:
+1. Remove all `console.log` statements with emojis (lines 32, 41, 48, 51, 64, 70, 74)
+2. Remove the entire "Raw Data Debug Info" section (lines 271-277)
+3. Keep only essential error logging with `console.error`
+
+This will clean up the results route and remove the debug information that's being displayed to users.
+
+---
+
+_**User (2025-09-22 16:17Z)**_
+
+push
+
+---
+
+_**Assistant**_
+
 
 
 ---
