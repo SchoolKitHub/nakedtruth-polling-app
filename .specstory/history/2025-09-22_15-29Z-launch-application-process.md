@@ -2881,9 +2881,737 @@ The debug information removal is now complete and deployed. The results route sh
 
 ---
 
-_**User**_
+_**User (2025-09-22 16:17Z)**_
 
 the final task is to use the names of candidates in the dashboard  instead of party names
+
+---
+
+_**Assistant**_
+
+I understand! You want to display the actual candidate names in the dashboard instead of just the party names. Let me find where the dashboard displays the poll results and update it to show candidate names.
+
+
+---
+
+Tool call timed out after 12s (codebase search)
+
+---
+
+<details>
+            <summary>Grep search for "presidential_candidates" • **5** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L11 | `presidential_candidates: Record<string, number>;` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L44 | `Object.entries(pollResults.presidential_candidates)` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L109 | `{Object.keys(pollResults.presidential_candidates).length}` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/candidates/page.tsx` | L122 | `pollResults={pollResults?.presidential_candidates || {}}` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L14 | `presidential_candidates: Record<string, number>;` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L186 | `{Object.entries(results.presidential_candidates).map(([candidate, votes]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L14 | `presidential_candidates: Record<string, number>;` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L186 | `{Object.entries(results.presidential_candidates).map(([candidate, votes]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L14 | `presidential_candidates: Record<string, number>;` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L186 | `{Object.entries(results.presidential_candidates).map(([candidate, votes]) => (` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L14 | `presidential_candidates: Record<string, number>;` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L186 | `{Object.entries(results.presidential_candidates).map(([candidate, votes]) => (` |
+
+</details>
+
+---
+
+Let me check the dashboard pages to see how the presidential candidates are currently displayed:
+
+
+---
+
+Read file: src/app/dashboard/page.tsx
+
+---
+
+I can see the issue! The dashboard is currently displaying the `candidate` key directly, which contains party names like "PDP (Peoples Democratic Party)" instead of the actual candidate names. I need to map these party names to the actual candidate names.
+
+Let me check the candidates data to understand the mapping:
+
+
+---
+
+Read file: src/lib/candidates.ts
+
+---
+
+Now I need to create a mapping function that converts party names to candidate names. Let me check what the current poll results look like and then create a solution:
+
+
+---
+
+Read file: src/app/dashboard/page.tsx
+
+---
+
+I need to import the candidates data and create a mapping function. Let me update the dashboard to show candidate names instead of party names:
+
+```typescript:src/app/dashboard/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { presidentialCandidates } from '@/lib/candidates';
+import { 
+  BarChart3, 
+  Users, 
+  RefreshCw, 
+  AlertCircle
+} from 'lucide-react';
+
+// ... existing interfaces ...
+
+export default function DashboardPage() {
+  // ... existing state and functions ...
+
+  // Function to get candidate name from party name
+  const getCandidateName = (partyName: string) => {
+    const candidate = presidentialCandidates.find(c => c.party === partyName);
+    return candidate ? candidate.name : partyName;
+  };
+
+  // ... existing code until the presidential candidates section ...
+
+          {/* Presidential Candidates */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              🏛️ Presidential Candidates
+            </h2>
+            <div className="space-y-3">
+              {Object.entries(results.presidential_candidates).map(([partyName, votes]) => (
+                <div key={partyName} className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                  <span className="font-medium">{getCandidateName(partyName)}</span>
+                  <span className="text-lg font-bold text-blue-600">
+                    {votes} votes ({((votes / results.total_responses) * 100).toFixed(1)}%)
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+// ... rest of the component ...
+```
+
+Let me also update the simple.tsx dashboard file:
+
+
+---
+
+Read file: src/app/dashboard/simple.tsx
+
+---
+
+Now I'll update both dashboard files to show candidate names instead of party names. Let me start with the main dashboard page:
+
+```typescript:src/app/dashboard/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { presidentialCandidates } from '@/lib/candidates';
+import { 
+  BarChart3, 
+  Users, 
+  RefreshCw, 
+  AlertCircle
+} from 'lucide-react';
+
+// ... existing interfaces ...
+
+export default function DashboardPage() {
+  // ... existing state and functions ...
+
+  // Function to get candidate name from party name
+  const getCandidateName = (partyName: string) => {
+    const candidate = presidentialCandidates.find(c => c.party === partyName);
+    return candidate ? candidate.name : partyName;
+  };
+
+  // ... existing code until the presidential candidates section ...
+
+          {/* Presidential Candidates */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              🏛️ Presidential Candidates
+            </h2>
+            <div className="space-y-3">
+              {Object.entries(results.presidential_candidates).map(([partyName, votes]) => (
+                <div key={partyName} className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                  <span className="font-medium">{getCandidateName(partyName)}</span>
+                  <span className="text-lg font-bold text-blue-600">
+                    {votes} votes ({((votes / results.total_responses) * 100).toFixed(1)}%)
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+// ... rest of the component ...
+```
+
+And for the simple.tsx file:
+
+```typescript:src/app/dashboard/simple.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { presidentialCandidates } from '@/lib/candidates';
+import { 
+  BarChart3, 
+  Users, 
+  RefreshCw, 
+  AlertCircle
+} from 'lucide-react';
+
+// ... existing interfaces ...
+
+export default function DashboardPage() {
+  // ... existing state and functions ...
+
+  // Function to get candidate name from party name
+  const getCandidateName = (partyName: string) => {
+    const candidate = presidentialCandidates.find(c => c.party === partyName);
+    return candidate ? candidate.name : partyName;
+  };
+
+  // ... existing code until the presidential candidates section ...
+
+          {/* Presidential Candidates */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              🏛️ Presidential Candidates
+            </h2>
+            <div className="space-y-3">
+              {Object.entries(results.presidential_candidates).map(([partyName, votes]) => (
+                <div key={partyName} className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                  <span className="font-medium">{getCandidateName(partyName)}</span>
+                  <span className="text-lg font-bold text-blue-600">
+                    {votes} votes ({((votes / results.total_responses) * 100).toFixed(1)}%)
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+// ... rest of the component ...
+```
+
+The key changes are:
+1. **Import the candidates data**: `import { presidentialCandidates } from '@/lib/candidates';`
+2. **Add a mapping function**: `getCandidateName()` that finds the candidate by party name
+3. **Update the display**: Use `getCandidateName(partyName)` instead of just `candidate`
+
+This will show names like "Bola Ahmed Tinubu" instead of "APC (All Progressives Congress)" in the dashboard results.
+
+---
+
+_**User (2025-09-22 16:17Z)**_
+
+push
+
+---
+
+_**Assistant**_
+
+I need to first make the actual changes to the dashboard files to show candidate names instead of party names, then push to git. Let me update the files:
+
+
+---
+
+Read file: src/app/dashboard/page.tsx
+
+---
+
+I can see the import is already there! Let me check if the getCandidateName function exists:
+
+
+---
+
+<details>
+            <summary>Grep search for "getCandidateName" • **2** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L68 | `const getCandidateName = (partyName: string) => {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L195 | `<span className="font-medium">{getCandidateName(partyName)}</span>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L68 | `const getCandidateName = (partyName: string) => {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L195 | `<span className="font-medium">{getCandidateName(partyName)}</span>` |
+
+</details>
+
+---
+
+Great! The changes are already in the main dashboard page. Let me check the simple.tsx file:
+
+
+---
+
+<details>
+            <summary>Grep search for "getCandidateName" • **2** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L68 | `const getCandidateName = (partyName: string) => {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L195 | `<span className="font-medium">{getCandidateName(partyName)}</span>` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L68 | `const getCandidateName = (partyName: string) => {` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L195 | `<span className="font-medium">{getCandidateName(partyName)}</span>` |
+
+</details>
+
+---
+
+Perfect! Both files already have the changes. Let me check the current git status and then push the changes:
+
+
+---
+
+```bash
+git status
+```
+
+```
+└──╼ $git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .specstory/history/2025-09-22_15-29Z-launch-application-process.md
+        modified:   src/app/dashboard/page.tsx
+        modified:   src/app/dashboard/simple.tsx
+
+no changes added to commit (use "git add" and/or "git commit -a")
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Great! I can see the dashboard files have been modified. Let me add the changes and commit them:
+
+
+---
+
+```bash
+git add .
+```
+
+```
+└──╼ $git add .
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Now let me commit the changes:
+
+
+---
+
+```bash
+git commit -m "Display candidate names instead of party names in dashboard
+
+- Add getCandidateName function to map party names to candidate names
+- Import presidentialCandidates data for name mapping
+- Update dashboard to show actual candidate names (e.g., 'Bola Ahmed Tinubu') instead of party names (e.g., 'APC (All Progressives Congress)')
+- Improve user experience by showing recognizable candidate names in poll results"
+```
+
+```
+└──╼ $git commit -m "Display candidate names instead of party names in dashboard
+
+- Improve user experience by showing recognizable candidate names in poll results"ead of party 
+[main 5c75445] Display candidate names instead of party names in dashboard
+ 3 files changed, 399 insertions(+), 6 deletions(-)
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Now let me push the changes to the remote repository:
+
+
+---
+
+```bash
+git push
+```
+
+```
+└──╼ $git push
+Enumerating objects: 17, done.
+Counting objects: 100% (17/17), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (9/9), 3.19 KiB | 817.00 KiB/s, done.
+Total 9 (delta 5), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (5/5), completed with 5 local objects.
+To https://github.com/SchoolKitHub/nakedtruth-polling-app.git
+   e3f50e7..5c75445  main -> main
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Perfect! ✅ The changes have been successfully pushed to git. Here's a summary of what was accomplished:
+
+## ✅ Candidate Names Displayed in Dashboard - Pushed to Git
+
+**Changes Made:**
+- **Added candidate name mapping** to both dashboard pages (`page.tsx` and `simple.tsx`)
+- **Imported presidentialCandidates data** for name mapping
+- **Created getCandidateName function** that maps party names to actual candidate names
+- **Updated dashboard display** to show candidate names instead of party names
+
+**Git Commit Details:**
+- **Commit Hash:** `5c75445`
+- **Files Changed:** 3 files
+- **Insertions:** 399 lines
+- **Deletions:** 6 lines
+- **Upload Size:** 3.19 KiB
+
+**What this accomplishes:**
+- **Before:** Dashboard showed "APC (All Progressives Congress)" 
+- **After:** Dashboard now shows "Bola Ahmed Tinubu"
+- **Before:** Dashboard showed "PDP (Peoples Democratic Party)"
+- **After:** Dashboard now shows "Goodluck Jonathan"
+
+**Result:**
+The dashboard will now display recognizable candidate names (like "Bola Ahmed Tinubu", "Peter Obi", "Atiku Abubakar") instead of party names, making the poll results much more user-friendly and easier to understand for voters.
+
+The final task is complete! The dashboard now shows candidate names instead of party names in the poll results.
+
+---
+
+_**User (2025-09-22 16:17Z)**_
+
+can we add thumbnails for candidates in dashboard
+
+---
+
+_**Assistant**_
+
+Absolutely! Let's add candidate thumbnails to the dashboard. This will make the results much more visually appealing and easier to identify candidates. Let me update the dashboard to include candidate images.
+
+
+---
+
+Read file: src/app/dashboard/page.tsx
+
+---
+
+Now I'll update the dashboard to include candidate thumbnails. I need to:
+
+1. Import the Image component from Next.js
+2. Update the getCandidateName function to also return candidate data
+3. Add thumbnails to the candidate display
+
+```typescript:src/app/dashboard/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { presidentialCandidates } from '@/lib/candidates';
+import { 
+  BarChart3, 
+  Users, 
+  RefreshCw, 
+  AlertCircle
+} from 'lucide-react';
+
+// ... existing interfaces ...
+
+export default function DashboardPage() {
+  // ... existing state and functions ...
+
+  // Function to get candidate data from party name
+  const getCandidateData = (partyName: string) => {
+    const candidate = presidentialCandidates.find(c => c.party === partyName);
+    return candidate || { name: partyName, image: '', party: partyName };
+  };
+
+  // ... existing code until the presidential candidates section ...
+
+          {/* Presidential Candidates */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              🏛️ Presidential Candidates
+            </h2>
+            <div className="space-y-3">
+              {Object.entries(results.presidential_candidates).map(([partyName, votes]) => {
+                const candidate = getCandidateData(partyName);
+                return (
+                  <div key={partyName} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200 flex-shrink-0">
+                        {candidate.image ? (
+                          <Image
+                            src={candidate.image}
+                            alt={candidate.name}
+                            fill
+                            className="object-cover"
+                            sizes="48px"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                            <span className="text-white text-lg font-bold">
+                              {candidate.name.split(' ').map(n => n[0]).join('')}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-900">{candidate.name}</span>
+                        <p className="text-sm text-gray-600">{candidate.party}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-lg font-bold text-blue-600">
+                        {votes} votes
+                      </span>
+                      <p className="text-sm text-gray-600">
+                        {((votes / results.total_responses) * 100).toFixed(1)}%
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+// ... rest of the component ...
+```
+
+Let me also update the simple.tsx dashboard file with the same changes:
+
+
+---
+
+Read file: src/app/dashboard/simple.tsx
+
+---
+
+I need to add the Image import and update both dashboard files. Let me make the changes:
+
+```typescript:src/app/dashboard/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { presidentialCandidates } from '@/lib/candidates';
+import { 
+  BarChart3, 
+  Users, 
+  RefreshCw, 
+  AlertCircle
+} from 'lucide-react';
+
+// ... existing interfaces ...
+
+export default function DashboardPage() {
+  // ... existing state and functions ...
+
+  // Function to get candidate data from party name
+  const getCandidateData = (partyName: string) => {
+    const candidate = presidentialCandidates.find(c => c.party === partyName);
+    return candidate || { name: partyName, image: '', party: partyName };
+  };
+
+  // ... existing code until the presidential candidates section ...
+
+          {/* Presidential Candidates */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              🏛️ Presidential Candidates
+            </h2>
+            <div className="space-y-3">
+              {Object.entries(results.presidential_candidates).map(([partyName, votes]) => {
+                const candidate = getCandidateData(partyName);
+                return (
+                  <div key={partyName} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200 flex-shrink-0">
+                        {candidate.image ? (
+                          <Image
+                            src={candidate.image}
+                            alt={candidate.name}
+                            fill
+                            className="object-cover"
+                            sizes="48px"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                            <span className="text-white text-lg font-bold">
+                              {candidate.name.split(' ').map(n => n[0]).join('')}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-900">{candidate.name}</span>
+                        <p className="text-sm text-gray-600">{candidate.party}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-lg font-bold text-blue-600">
+                        {votes} votes
+                      </span>
+                      <p className="text-sm text-gray-600">
+                        {((votes / results.total_responses) * 100).toFixed(1)}%
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+// ... rest of the component ...
+```
+
+And for the simple.tsx file:
+
+```typescript:src/app/dashboard/simple.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { presidentialCandidates } from '@/lib/candidates';
+import { 
+  BarChart3, 
+  Users, 
+  RefreshCw, 
+  AlertCircle
+} from 'lucide-react';
+
+// ... existing interfaces ...
+
+export default function DashboardPage() {
+  // ... existing state and functions ...
+
+  // Function to get candidate data from party name
+  const getCandidateData = (partyName: string) => {
+    const candidate = presidentialCandidates.find(c => c.party === partyName);
+    return candidate || { name: partyName, image: '', party: partyName };
+  };
+
+  // ... existing code until the presidential candidates section ...
+
+          {/* Presidential Candidates */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              🏛️ Presidential Candidates
+            </h2>
+            <div className="space-y-3">
+              {Object.entries(results.presidential_candidates).map(([partyName, votes]) => {
+                const candidate = getCandidateData(partyName);
+                return (
+                  <div key={partyName} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div className="flex items-center space-x-4">
+                      <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-gray-200 flex-shrink-0">
+                        {candidate.image ? (
+                          <Image
+                            src={candidate.image}
+                            alt={candidate.name}
+                            fill
+                            className="object-cover"
+                            sizes="48px"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                            <span className="text-white text-lg font-bold">
+                              {candidate.name.split(' ').map(n => n[0]).join('')}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <span className="font-medium text-gray-900">{candidate.name}</span>
+                        <p className="text-sm text-gray-600">{candidate.party}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-lg font-bold text-blue-600">
+                        {votes} votes
+                      </span>
+                      <p className="text-sm text-gray-600">
+                        {((votes / results.total_responses) * 100).toFixed(1)}%
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+// ... rest of the component ...
+```
+
+The key improvements are:
+
+1. **Added Image import** from Next.js
+2. **Updated getCandidateName to getCandidateData** to return full candidate object
+3. **Added candidate thumbnails** with 48px circular images
+4. **Enhanced layout** with better spacing and hover effects
+5. **Fallback initials** for candidates without images
+6. **Better information hierarchy** showing name, party, votes, and percentage
+
+This will make the dashboard much more visually appealing with candidate photos, making it easier for users to quickly identify and recognize the candidates in the poll results.
+
+---
+
+_**User (2025-09-22 16:17Z)**_
+
+push
+
+---
+
+_**Assistant**_
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
+
+---
+
+
 
 ---
 
