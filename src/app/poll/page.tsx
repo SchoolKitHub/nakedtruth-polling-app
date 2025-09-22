@@ -1,4 +1,6 @@
 'use client';
+import { presidentialCandidates } from "@/lib/candidates";
+import CandidateCard from "@/components/CandidateCard";
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -21,6 +23,7 @@ export default function PollPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [selectedCandidate, setSelectedCandidate] = useState<string>("");
 
   const {
     register,
@@ -31,16 +34,6 @@ export default function PollPage() {
   } = useForm<PollFormData>();
 
   const watchedIssues = watch('key_issues', []);
-
-  const presidentialCandidates = [
-    'APC (All Progressives Congress)',
-    'PDP (Peoples Democratic Party)', 
-    'LP (Labour Party)',
-    'NNPP (New Nigeria Peoples Party)',
-    'SDP (Social Democratic Party)',
-    'Other Candidate',
-    'Undecided'
-  ];
 
   const keyIssues = [
     'Economy & Job Creation',
@@ -86,17 +79,31 @@ export default function PollPage() {
     }
   };
 
+  const handleCandidateSelect = (candidateId: string) => {
+    setSelectedCandidate(candidateId);
+    setValue("presidential_candidate", candidateId);
+  };
+
   const onSubmit = async (data: PollFormData) => {
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
-      const response = await fetch('/api/submit-poll', {
-        method: 'POST',
+      // Convert candidate ID to candidate name for better data consistency
+      const candidateData = presidentialCandidates.find(c => c.id === data.presidential_candidate);
+      const candidateName = candidateData ? `${candidateData.name} (${candidateData.party})` : data.presidential_candidate;
+      
+      const submitData = {
+        ...data,
+        presidential_candidate: candidateName
+      };
+
+      const response = await fetch("/api/submit-poll", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(submitData),
       });
 
       const result = await response.json();
@@ -104,12 +111,12 @@ export default function PollPage() {
       if (result.success) {
         setIsSubmitted(true);
         // Store in localStorage to prevent multiple submissions
-        localStorage.setItem('nakedtruth_voted', 'true');
+        localStorage.setItem("nakedtruth_voted", "true");
       } else {
-        setSubmitError(result.error || 'Failed to submit poll');
+        setSubmitError(result.error || "Failed to submit poll");
       }
     } catch (error) {
-      setSubmitError('Network error. Please try again.');
+      setSubmitError("Network error. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -201,17 +208,15 @@ export default function PollPage() {
             <p className="text-gray-600 mb-6">
               Which candidate would you most likely vote for in the 2027 presidential election?
             </p>
-            <div className="space-y-3">
+            <div className="grid gap-4">
               {presidentialCandidates.map((candidate) => (
-                <label key={candidate} className="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
-                  <input
-                    type="radio"
-                    value={candidate}
-                    {...register('presidential_candidate', { required: 'Please select a candidate preference' })}
-                    className="mr-3 text-blue-600"
-                  />
-                  <span className="text-gray-900">{candidate}</span>
-                </label>
+                <CandidateCard
+                  key={candidate.id}
+                  candidate={candidate}
+                  isSelected={selectedCandidate === candidate.id}
+                  onSelect={handleCandidateSelect}
+                  register={register}
+                />
               ))}
             </div>
             {errors.presidential_candidate && (

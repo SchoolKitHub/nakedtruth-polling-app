@@ -13,6 +13,7 @@ export default function Header({ currentPage }: HeaderProps) {
 
   const navigation = [
     { name: 'Take Poll', href: '/poll' },
+    { name: 'Candidates', href: '/candidates' },
     { name: 'Results', href: '/dashboard' },
     { name: 'Education', href: '/education' },
     { name: 'Methodology', href: '/methodology' },

@@ -16,6 +16,9 @@ export default function Home() {
               <Link href="/poll" className="text-gray-600 hover:text-blue-600 transition-colors">
                 Take Poll
               </Link>
+              <Link href="/candidates" className="text-gray-600 hover:text-blue-600 transition-colors">
+                Candidates
+              </Link>
               <Link href="/dashboard" className="text-gray-600 hover:text-blue-600 transition-colors">
                 Results
               </Link>
@@ -47,6 +50,12 @@ export default function Home() {
               className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
             >
               Take the Poll
+            </Link>
+            <Link 
+              href="/candidates" 
+              className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+            >
+              View Candidates
             </Link>
             <Link 
               href="/dashboard" 
@@ -113,6 +122,7 @@ export default function Home() {
               <h4 className="font-semibold mb-4">Polling</h4>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><Link href="/poll" className="hover:text-white transition-colors">Take Poll</Link></li>
+                <li><Link href="/candidates" className="hover:text-white transition-colors">View Candidates</Link></li>
                 <li><Link href="/dashboard" className="hover:text-white transition-colors">View Results</Link></li>
                 <li><Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link></li>
               </ul>
