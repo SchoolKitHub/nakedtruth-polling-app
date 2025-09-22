@@ -1405,3 +1405,351 @@ Once I make these changes, the Next.js development server should automatically r
 
 ---
 
+_**User (2025-09-22 15:30Z)**_
+
+awesome now push to git
+
+---
+
+_**Assistant**_
+
+Great! I can see the application is now working and the images should be loading correctly. Let me push the changes to git. First, let me check the git status and then commit and push the changes.
+
+
+---
+
+```bash
+git status
+```
+
+```
+└──╼ $git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   .specstory/history/2025-09-12_19-10Z-launch-the-app.md
+        deleted:    52890267_1831370890302585_730339225676808192_n.jpg
+        deleted:    Atiku_Abubakar_2023.jpg
+        deleted:    Bola Ahmed Tinubu.jpeg
+        deleted:    Goodluck Jonathan .jpeg
+        deleted:    Rabiu Musa Kwankwaso .jpg
+        deleted:    SWAT Presidential Candidates.docx
+        deleted:    Screenshot at 2025-09-08 23-38-30.png
+        deleted:    Screenshot at 2025-09-08 23-44-23.png
+        deleted:    The Poll Qs2f.docx
+        deleted:    images.jpeg
+        deleted:    public/candidates/atiku-abubakar.jpg
+        deleted:    public/candidates/bola-ahmed-tinubu.jpg
+        deleted:    public/candidates/bukola-saraki.jpg
+        deleted:    public/candidates/goodluck-jonathan.jpg
+        deleted:    public/candidates/peter-obi.jpg
+        deleted:    public/candidates/rabiu-musa-kwankwaso.jpg
+        deleted:    public/candidates/rotimi-amaechi.jpg
+        deleted:    public/candidates/seyi-makinde.jpg
+        modified:   src/lib/candidates.ts
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .specstory/history/2025-09-22_15-29Z-launch-application-process.md
+        atiku.png
+        goodluck.png
+        kwankwaso.png
+        makinde.png
+        obi.png
+        public/candidates/atiku.png
+        public/candidates/goodluck.png
+        public/candidates/kwankwaso.png
+        public/candidates/makinde.png
+        public/candidates/obi.png
+        public/candidates/rotimi.png
+        public/candidates/saraki.png
+        public/candidates/tinubu.png
+        rotimi.png
+        saraki.png
+        tinubu.png
+
+no changes added to commit (use "git add" and/or "git commit -a")
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Perfect! I can see all the changes. Let me add all the changes and commit them:
+
+
+---
+
+```bash
+git add .
+```
+
+```
+└──╼ $git add .
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Now let me commit the changes with a descriptive message:
+
+
+---
+
+```bash
+git commit -m "Update candidate images to high-resolution PNG files
+
+- Replace all candidate images with high-resolution PNG versions
+- Update image paths in candidates.ts to use new PNG files
+- Remove old JPG files and unused documents
+- Fix avatar loading issues for Rotimi Amaechi and Bukola Saraki
+- Improve image quality and consistency across all candidates"
+```
+
+```
+└──╼ $git commit -m "Update candidate images to high-resolution PNG files
+
+- Improve image quality and consistency across all candidates"ki
+[main 173a33e] Update candidate images to high-resolution PNG files
+ 37 files changed, 1569 insertions(+), 9 deletions(-)
+ create mode 100644 .specstory/history/2025-09-22_15-29Z-launch-application-process.md
+ delete mode 100644 52890267_1831370890302585_730339225676808192_n.jpg
+ delete mode 100644 Atiku_Abubakar_2023.jpg
+ delete mode 100644 Bola Ahmed Tinubu.jpeg
+ delete mode 100644 Goodluck Jonathan .jpeg
+ delete mode 100644 Rabiu Musa Kwankwaso .jpg
+ delete mode 100644 SWAT Presidential Candidates.docx
+ delete mode 100644 Screenshot at 2025-09-08 23-38-30.png
+ delete mode 100644 Screenshot at 2025-09-08 23-44-23.png
+ delete mode 100644 The Poll Qs2f.docx
+ create mode 100644 atiku.png
+ create mode 100644 goodluck.png
+ delete mode 100644 images.jpeg
+ create mode 100644 kwankwaso.png
+ create mode 100644 makinde.png
+ create mode 100644 obi.png
+ delete mode 100644 public/candidates/atiku-abubakar.jpg
+ create mode 100644 public/candidates/atiku.png
+ delete mode 100644 public/candidates/bola-ahmed-tinubu.jpg
+ delete mode 100644 public/candidates/bukola-saraki.jpg
+ delete mode 100644 public/candidates/goodluck-jonathan.jpg
+ create mode 100644 public/candidates/goodluck.png
+ create mode 100644 public/candidates/kwankwaso.png
+ create mode 100644 public/candidates/makinde.png
+ create mode 100644 public/candidates/obi.png
+ delete mode 100644 public/candidates/peter-obi.jpg
+ delete mode 100644 public/candidates/rabiu-musa-kwankwaso.jpg
+ delete mode 100644 public/candidates/rotimi-amaechi.jpg
+ create mode 100644 public/candidates/rotimi.png
+ create mode 100644 public/candidates/saraki.png
+ delete mode 100644 public/candidates/seyi-makinde.jpg
+ create mode 100644 public/candidates/tinubu.png
+ create mode 100644 rotimi.png
+ create mode 100644 saraki.png
+ create mode 100644 tinubu.png
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Great! Now let me push the changes to the remote repository:
+
+
+---
+
+```bash
+git push
+```
+
+```
+└──╼ $git push
+Enumerating objects: 28, done.
+Counting objects: 100% (28/28), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (19/19), done.
+Writing objects: 100% (19/19), 9.33 MiB | 136.00 KiB/s, done.
+Total 19 (delta 7), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (7/7), completed with 7 local objects.
+To https://github.com/SchoolKitHub/nakedtruth-polling-app.git
+   e0c8c17..173a33e  main -> main
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Perfect! 🎉 The changes have been successfully pushed to git. Here's a summary of what was accomplished:
+
+## ✅ Successfully Updated and Pushed to Git
+
+**Changes Made:**
+- **Updated all candidate images** to high-resolution PNG files
+- **Fixed image paths** in `src/lib/candidates.ts` to use the new PNG files
+- **Resolved avatar loading issues** for Rotimi Amaechi and Bukola Saraki
+- **Removed old JPG files** and unused documents
+- **Improved image quality** and consistency across all candidates
+
+**Git Commit Details:**
+- **Commit Hash:** `173a33e`
+- **Files Changed:** 37 files
+- **Insertions:** 1,569 lines
+- **Deletions:** 9 lines
+- **Total Upload:** 9.33 MiB
+
+**New Image Files Added:**
+- `tinubu.png` - Bola Ahmed Tinubu
+- `goodluck.png` - Goodluck Jonathan  
+- `atiku.png` - Atiku Abubakar
+- `obi.png` - Peter Obi
+- `kwankwaso.png` - Rabiu Musa Kwankwaso
+- `makinde.png` - Seyi Makinde
+- `rotimi.png` - Rotimi Amaechi
+- `saraki.png` - Bukola Saraki
+
+The NakedTruth polling application is now running with all high-resolution candidate images properly loaded! The avatar loading issues have been resolved, and all changes have been successfully committed and pushed to the remote repository.
+
+---
+
+_**User (2025-09-22 16:11Z)**_
+
+after deployment, in the candidate route i can see debug information please how do we fix it :
+Debug Information
+
+{
+  "presidential_candidates": {
+    "PDP (Peoples Democratic Party)": 49,
+    "LP (Labour Party)": 44,
+    "APC (All Progressives Congress)": 39,
+    "NNPP (New Nigeria Peoples Party)": 23,
+    "ADC (African Democratic Congress)": 16,
+    "APGA (All Progressives Grand Alliance)": 11,
+    "YPP (Young Progressives Party)": 9,
+    "SDP (Social Democratic Party)": 14,
+    "Atiku Abubakar (ADC Coalition)": 1
+  },
+  "key_issues": {
+    "Economy & Job Creation": 121,
+    "Corruption & Governance": 94,
+    "Education Reform": 62,
+    "Security & Safety": 111,
+    "Healthcare System": 52,
+    "Infrastructure Development": 60,
+    "Agriculture & Food Security": 22,
+    "Youth Empowerment": 38,
+    "Electoral Reforms": 15,
+    "Energy & Power Supply": 23,
+    "Agricultural Development": 1
+  },
+  "demographics": {
+    "age_groups": {
+      "18-24": 48,
+      "45-54": 27,
+      "25-34": 65,
+      "65+": 6,
+      "35-44": 51,
+      "55-64": 9
+    },
+    "regions": {
+      "North East": 32,
+      "South East": 28,
+      "South West": 41,
+      "North Central": 31,
+      "North West": 39,
+      "South South": 35
+    },
+    "genders": {
+      "Female": 102,
+      "Prefer not to say": 3,
+      "Male": 101
+    }
+  },
+  "total_responses": 206
+
+---
+
+_**Assistant**_
+
+I can see that debug information is being displayed on the candidates route after deployment. This is likely coming from a debug console.log or similar statement in the code. Let me find and remove this debug information.
+
+
+---
+
+<details>
+                <summary>Searched codebase "Where is debug information or console.log being displayed on the candidates page?" • **10** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/app/candidates/page.tsx` | L8-198 |
+| `src/app/candidates/page.tsx` | L17-198 |
+| `src/components/CandidateGallery.tsx` | L7-394 |
+| `src/app/dashboard/page.tsx` | L21-292 |
+| `src/app/dashboard/page.tsx` | L12-292 |
+| `src/app/dashboard/simple.tsx` | L21-292 |
+| `src/app/dashboard/simple.tsx` | L12-292 |
+| `src/components/CandidateGallery.tsx` | L10-394 |
+| `src/app/poll/page.tsx` | L19-379 |
+| `src/components/CandidateCard.tsx` | L4-57 |
+
+</details>
+
+---
+
+I found the issue! The debug information is being displayed in the dashboard page (`src/app/dashboard/page.tsx`) at lines 272-277. There's a debug section that shows the raw JSON data. Let me also check if there are any other debug statements and remove them.
+
+
+---
+
+Read file: src/app/dashboard/page.tsx
+
+---
+
+Now let me also check for any console.log statements that should be removed:
+
+
+---
+
+<details>
+            <summary>Grep search for "console\.log" • **2** files</summary>
+        
+| File | Line | Match |
+|------|------|-------|
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L32 | `console.log('🚀 Starting data fetch from /api/results');` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L41 | `console.log('📡 Response received:', response.status, response.statusText);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L48 | `console.log('📦 Data received:', data);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L51 | `console.log('✅ Setting results:', data.data);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L64 | `console.log('🏁 Setting loading to false');` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L70 | `console.log('🎯 Dashboard component mounted');` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/simple.tsx` | L74 | `console.log('🔍 Current state:', { loading, error, results });` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L32 | `console.log('🚀 Starting data fetch from /api/results');` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L41 | `console.log('📡 Response received:', response.status, response.statusText);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L48 | `console.log('📦 Data received:', data);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L51 | `console.log('✅ Setting results:', data.data);` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L64 | `console.log('🏁 Setting loading to false');` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L70 | `console.log('🎯 Dashboard component mounted');` |
+| `file:///home/ghost/Desktop/spades/nakedtruth/src/app/dashboard/page.tsx` | L74 | `console.log('🔍 Current state:', { loading, error, results });` |
+
+</details>
+
+---
+
+Perfect! I found the issues. There are debug console.log statements and a debug information section that's displaying the raw JSON data. Let me fix both issues:
+
+1. Remove the debug information section from the dashboard
+2. Remove the console.log statements
+
+
+---
+
+Read file: src/app/dashboard/page.tsx
+
+---
+
+
+
+---
+

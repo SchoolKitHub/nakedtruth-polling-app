@@ -29,8 +29,6 @@ export default function DashboardPage() {
 
   const fetchResults = async () => {
     try {
-      console.log('🚀 Starting data fetch from /api/results');
-      
       const response = await fetch('/api/results', {
         method: 'GET',
         headers: {
@@ -38,40 +36,32 @@ export default function DashboardPage() {
         },
       });
       
-      console.log('📡 Response received:', response.status, response.statusText);
-      
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       
       const data = await response.json();
-      console.log('📦 Data received:', data);
       
       if (data.success && data.data) {
-        console.log('✅ Setting results:', data.data);
         setResults(data.data);
         setLastUpdate(new Date());
         setError(null);
       } else {
-        console.error('❌ API returned error:', data.error);
+        console.error('API returned error:', data.error);
         setError(data.error || 'Failed to fetch results');
       }
     } catch (err) {
-      console.error('💥 Fetch error:', err);
+      console.error('Fetch error:', err);
       const errorMessage = err instanceof Error ? err.message : 'Network error';
       setError(errorMessage);
     } finally {
-      console.log('🏁 Setting loading to false');
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    console.log('🎯 Dashboard component mounted');
     fetchResults();
   }, []);
-
-  console.log('🔍 Current state:', { loading, error, results });
 
   if (loading) {
     return (
@@ -266,14 +256,6 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Raw Data Debug Info */}
-        <div className="mt-8 bg-gray-100 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">🔧 Debug Information</h3>
-          <pre className="text-xs text-gray-600 overflow-x-auto">
-            {JSON.stringify(results, null, 2)}
-          </pre>
         </div>
 
         {/* Disclaimer */}
