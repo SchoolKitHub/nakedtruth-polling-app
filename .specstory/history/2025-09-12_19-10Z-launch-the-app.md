@@ -444,9 +444,162 @@ The app is already built and ready - it just needs the database connection to wo
 
 ---
 
-_**User**_
+_**User (2025-09-22 13:19Z)**_
 
 great so we are hosting this on vercel and all the env variables are configured, how do we ensure poll votes are persisted on supabase, if we push to git will response be submitted
+
+---
+
+_**Assistant**_
+
+Great question! Let me check the current database setup and ensure the poll responses will be properly persisted to Supabase when deployed to Vercel.
+
+
+---
+
+Read file: /home/ghost/Desktop/spades/nakedtruth/src/app/api/submit-poll/route.ts
+
+---
+
+<details>
+                <summary>Searched codebase "How are poll responses submitted and stored in the database?" • **6** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/app/api/submit-poll/route.ts` | Lundefined-82 |
+| `src/app/api/submit-poll/route.ts` | L1-94 |
+| `src/app/api/results/route.ts` | Lundefined-38 |
+| `src/app/api/submit-poll/route.ts` | L4-94 |
+| `src/app/api/test/route.ts` | Lundefined-22 |
+| `src/app/api/results/route.ts` | L3-38 |
+
+</details>
+
+---
+
+<details>
+                <summary>Searched codebase "How are poll results retrieved and displayed?" • **6** results</summary>
+            
+| File | Lines |
+|------|-------|
+| `src/app/api/results/route.ts` | Lundefined-38 |
+| `src/app/api/submit-poll/route.ts` | Lundefined-82 |
+| `src/app/api/submit-poll/route.ts` | L1-94 |
+| `src/app/api/results/route.ts` | L3-38 |
+| `src/app/api/test/route.ts` | Lundefined-22 |
+| `src/app/api/submit-poll/route.ts` | L4-94 |
+
+</details>
+
+---
+
+Perfect! I can see the architecture is already set up correctly for persistence. Let me also check if there are any deployment configurations and then provide you with a comprehensive answer.
+
+
+---
+
+<details>
+            <summary>Searched codebase "vercel.json" • **0** results</summary>
+        
+No results found
+</details>
+
+---
+
+<details>
+            <summary>Searched codebase ".gitignore" • **2** results</summary>
+        
+| File |
+|------|
+| `/home/ghost/Desktop/spades/nakedtruth/.gitignore` |
+| `/home/ghost/Desktop/spades/nakedtruth/.specstory/.gitignore` |
+
+</details>
+
+---
+
+Read file: /home/ghost/Desktop/spades/nakedtruth/.gitignore
+
+---
+
+## ✅ **Yes, Poll Votes Will Be Persisted on Supabase!**
+
+Your app is already properly configured for persistence. Here's how it works:
+
+### 🔄 **Data Flow Architecture**
+
+1. **Frontend** → **API Route** → **Supabase Database**
+2. **Poll Submission**: `/api/submit-poll` → `submitPollResponse()` → Supabase `responses` table
+3. **Results Retrieval**: `/api/results` → `getPollResults()` → Supabase `responses` table
+
+### 🗄️ **Database Persistence**
+
+The app uses **Supabase PostgreSQL** which provides:
+- ✅ **Persistent storage** - Data survives deployments
+- ✅ **Real-time updates** - Results update immediately
+- ✅ **Row Level Security** - Anonymous submissions allowed
+- ✅ **IP-based duplicate prevention** - Prevents multiple votes per IP
+
+### �� **Deployment to Vercel**
+
+When you push to Git and deploy to Vercel:
+
+1. **Environment Variables**: Set in Vercel dashboard:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+   ```
+
+2. **Database Schema**: Run the `supabase-schema.sql` in your Supabase SQL Editor
+
+3. **Data Persistence**: All poll responses are stored in Supabase, not in your code repository
+
+### 🔒 **Security & Privacy Features**
+
+- **Anonymous Submissions**: No personal data collected
+- **IP Hashing**: IP addresses are hashed for duplicate prevention
+- **Consent Required**: Users must agree to participate
+- **Regional Analytics**: Demographics stored for insights only
+
+### 📊 **What Gets Stored**
+
+```sql
+responses table:
+- id (UUID)
+- presidential_candidate (TEXT)
+- key_issues (TEXT[])
+- demographics (JSONB: age_group, region, gender)
+- ip_hash (TEXT - hashed for privacy)
+- created_at (TIMESTAMP)
+```
+
+### 🎯 **Deployment Checklist**
+
+1. **✅ Code is ready** - API routes are properly configured
+2. **✅ Database schema** - `supabase-schema.sql` ready to run
+3. **✅ Environment variables** - Set in Vercel dashboard
+4. **✅ Git ignore** - `.env*` files are properly ignored
+
+### �� **Next Steps**
+
+1. **Push to Git**:
+   ```bash
+   git add .
+   git commit -m "Ready for deployment"
+   git push origin main
+   ```
+
+2. **Deploy to Vercel**:
+   - Connect your GitHub repo to Vercel
+   - Set environment variables in Vercel dashboard
+   - Deploy automatically
+
+3. **Set up Supabase**:
+   - Run the SQL schema in Supabase
+   - Test the connection with `/api/test`
+
+**The poll votes will be fully persistent and survive all deployments!** 🎉
 
 ---
 
