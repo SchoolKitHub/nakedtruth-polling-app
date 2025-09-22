@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { presidentialCandidates } from '@/lib/candidates';
 import { 
   BarChart3, 
   Users, 
@@ -62,6 +63,12 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchResults();
   }, []);
+
+  // Function to get candidate name from party name
+  const getCandidateName = (partyName: string) => {
+    const candidate = presidentialCandidates.find(c => c.party === partyName);
+    return candidate ? candidate.name : partyName;
+  };
 
   if (loading) {
     return (
@@ -183,9 +190,9 @@ export default function DashboardPage() {
               🏛️ Presidential Candidates
             </h2>
             <div className="space-y-3">
-              {Object.entries(results.presidential_candidates).map(([candidate, votes]) => (
-                <div key={candidate} className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="font-medium">{candidate}</span>
+              {Object.entries(results.presidential_candidates).map(([partyName, votes]) => (
+                <div key={partyName} className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                  <span className="font-medium">{getCandidateName(partyName)}</span>
                   <span className="text-lg font-bold text-blue-600">
                     {votes} votes ({((votes / results.total_responses) * 100).toFixed(1)}%)
                   </span>
