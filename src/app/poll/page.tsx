@@ -194,8 +194,7 @@ export default function PollPage() {
             Nigeria 2027 Presidential Election Poll
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Help us forecast voter sentiment for Nigeria's 2027 presidential elections. 
-            Your responses are completely anonymous and secure.
+            Participate in forecasting voter's sentiments for 2027 Presidential Election - Completely anonymous and secure.
           </p>
         </div>
 
