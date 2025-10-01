@@ -234,36 +234,54 @@ export default function DashboardPage() {
               🏛️ Presidential Candidates
             </h2>
             <div className="space-y-3">
-              {Object.entries(results.presidential_candidates).map(([key, votes]) => {
-                const candidate = getCandidateData(key);
-                return (
-                  <div key={key} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <div className="flex items-center space-x-3">
-                      <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 flex-shrink-0">
-                        {candidate.image ? (
-                          <Image
-                            src={candidate.image}
-                            alt={candidate.name}
-                            fill
-                            className="object-cover"
-                            sizes="40px"
-                          />
-                        ) : (
-                          <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-                            <span className="text-white text-sm font-bold">
-                              {candidate.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
-                            </span>
-                          </div>
-                        )}
+              {(() => {
+                // Aggregate votes by candidate name to avoid duplicates
+                const aggregatedVotes: Record<string, { candidate: any, votes: number }> = {};
+                
+                Object.entries(results.presidential_candidates).forEach(([key, votes]) => {
+                  const candidate = getCandidateData(key);
+                  const candidateName = candidate.name;
+                  
+                  if (aggregatedVotes[candidateName]) {
+                    // Add votes to existing candidate
+                    aggregatedVotes[candidateName].votes += votes;
+                  } else {
+                    // Create new entry
+                    aggregatedVotes[candidateName] = { candidate, votes };
+                  }
+                });
+                
+                // Sort by votes (descending) and render
+                return Object.entries(aggregatedVotes)
+                  .sort(([,a], [,b]) => b.votes - a.votes)
+                  .map(([candidateName, data]) => (
+                    <div key={candidateName} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                      <div className="flex items-center space-x-3">
+                        <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 flex-shrink-0">
+                          {data.candidate.image ? (
+                            <Image
+                              src={data.candidate.image}
+                              alt={data.candidate.name}
+                              fill
+                              className="object-cover"
+                              sizes="40px"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                              <span className="text-white text-sm font-bold">
+                                {data.candidate.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <span className="font-medium text-gray-900">{data.candidate.name}</span>
                       </div>
-                      <span className="font-medium text-gray-900">{candidate.name}</span>
+                      <span className="text-lg font-bold text-blue-600">
+                        {data.votes} ({((data.votes / results.total_responses) * 100).toFixed(1)}%)
+                      </span>
                     </div>
-                    <span className="text-lg font-bold text-blue-600">
-                      {votes} ({((votes / results.total_responses) * 100).toFixed(1)}%)
-                    </span>
-                  </div>
-                );
-              })}
+                  ));
+              })()}
             </div>
           </div>
 
