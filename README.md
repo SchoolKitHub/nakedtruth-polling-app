@@ -245,3 +245,4 @@ For support, email support@nakedtruth.com or create an issue in this repository.
 ---
 
 **Disclaimer**: This is an independent forecasting platform, not affiliated with INEC or any political party. Results are for educational and analytical purposes only.
+# Force rebuild
