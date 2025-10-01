@@ -84,11 +84,11 @@ export default function CandidateGallery({ showPollData = false, pollResults = {
     const pollPercentage = totalVotes > 0 ? (pollVotes / totalVotes * 100).toFixed(1) : '0';
 
     return (
-      <div className={`bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 ${
+      <div className={`bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 flex flex-col ${
         isExpanded ? 'col-span-full' : ''
       }`}>
         {/* Header */}
-        <div className="p-6">
+        <div className="p-6 flex flex-col flex-1">
           {/* Full Width Button */}
           <button
             onClick={() => toggleExpanded(candidate.id)}
@@ -133,8 +133,8 @@ export default function CandidateGallery({ showPollData = false, pollResults = {
           </div>
 
           {/* Description - Full Width */}
-          <div className="mb-4">
-            <p className="text-gray-700 text-sm leading-loose w-full">{candidate.description}</p>
+          <div className="mb-4 flex-1">
+            <p className="text-gray-700 text-sm leading-relaxed w-full">{candidate.description}</p>
           </div>
 
           {/* Poll Data */}
@@ -149,32 +149,34 @@ export default function CandidateGallery({ showPollData = false, pollResults = {
             </div>
           )}
 
-          {/* Quick Stats */}
-          <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-            {candidate.keyStats?.age && (
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Calendar className="h-4 w-4" />
-                <span>{candidate.keyStats.age}</span>
-              </div>
-            )}
-            {candidate.keyStats?.region && (
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <MapPin className="h-4 w-4" />
-                <span>{candidate.keyStats.region}</span>
-              </div>
-            )}
-            {candidate.position && (
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Award className="h-4 w-4" />
-                <span>{candidate.position}</span>
-              </div>
-            )}
-            {candidate.votesIn2023 && (
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <Users className="h-4 w-4" />
-                <span>{candidate.votesIn2023}</span>
-              </div>
-            )}
+          {/* Quick Stats - Pushed to Bottom */}
+          <div className="mt-auto pt-4 border-t border-gray-100">
+            <div className="grid grid-cols-2 gap-3">
+              {candidate.keyStats?.age && (
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <Calendar className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">{candidate.keyStats.age}</span>
+                </div>
+              )}
+              {candidate.keyStats?.region && (
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <MapPin className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">{candidate.keyStats.region}</span>
+                </div>
+              )}
+              {candidate.position && (
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <Award className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">{candidate.position}</span>
+                </div>
+              )}
+              {candidate.votesIn2023 && (
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <Users className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">{candidate.votesIn2023}</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
