@@ -6865,13 +6865,135 @@ Read file: src/components/CandidateGallery.tsx
 
 ---
 
-
+Cancelled
 
 ---
 
 _**User (2025-10-01 05:49Z)**_
 
 please continue
+
+---
+
+_**Assistant**_
+
+Let me continue by updating the default active tab to show SWOT first:
+
+---
+
+Tool use: **edit_file**
+
+
+<details><summary>Edit file: src/components/CandidateGallery.tsx</summary>
+
+Change the default activeTab state from 'overview' to 'swot' so SWOT Analysis shows first when a card is expanded
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -17,5 +17,5 @@
+    const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+    const [expandedCard, setExpandedCard] = useState<string | null>(null);
+-   const [activeTab, setActiveTab] = useState<'overview' | 'swot' | 'stats'>('overview');
++   const [activeTab, setActiveTab] = useState<'overview' | 'swot' | 'stats'>('swot');
+  
+    // Filter candidates based on search and filters
+```
+
+</details>
+
+---
+
+Perfect! Now let me commit and push these improvements:
+
+---
+
+Tool use: **run_terminal_cmd**
+
+```bash
+git add . && git commit -m "Improve candidate gallery HCI/UX
+
+- Make expand button more prominent with 'View Details' text and blue styling
+- Remove party chips as primaries haven't been decided yet
+- Reorder tabs: SWOT Analysis first, then Overview, then Key Stats
+- Change default tab to SWOT for better user engagement
+- Improve button visibility for non-tech savvy users" && git push
+```
+
+```
+└──╼ $git add . && git commit -m "Improve candidate gallery HCI/UX
+
+- Make expand button more prominent with 'View Details' text and blue styling
+- Remove party chips as primaries haven't been decided yet
+- Reorder tabs: SWOT Analysis first, then Overview, then Key Stats
+- Change default tab to SWOT for better user engagement
+- Imprgit add . && git commit -m "Improve candidate gallery HCI/UX
+
+- Make expand button more prominent with 'View Details' text and blue styling
+- Remove party chips as primaries haven't been decided yet
+- Reorder tabs: SWOT Analysis first, then Overview, then Key Stats
+- Change default tab to SWOT for better user engagement
+- Improve button visibility for non-tech savvy users" && git push
+[main 478e322] Improve candidate gallery HCI/UX
+ 2 files changed, 277 insertions(+), 7 deletions(-)
+Enumerating objects: 15, done.
+Counting objects: 100% (15/15), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (8/8), 3.35 KiB | 380.00 KiB/s, done.
+Total 8 (delta 5), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (5/5), completed with 5 local objects.
+To https://github.com/SchoolKitHub/nakedtruth-polling-app.git
+   ff00bb2..478e322  main -> main
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Perfect! ✅ All HCI improvements have been successfully implemented and pushed!
+
+## 🎨 Summary of HCI Improvements
+
+**Git Commit Details:**
+- **Commit Hash:** `478e322`
+- **Files Changed:** 2 files
+- **Upload Size:** 3.35 KiB
+
+### Changes Made:
+
+1. **✅ More Prominent Expand Button**
+   - **Before**: Small gray circular button with only an icon (8x8 px)
+   - **After**: Large blue button with "View Details" text and icon
+   - Blue background (`bg-blue-600`) with shadow for visibility
+   - Text label makes purpose clear to non-tech savvy users
+   - Changes to "Close" when expanded
+
+2. **✅ Removed Party Chips**
+   - Removed the party name badges (e.g., "APC (All Progressives Congress)")
+   - Cleaner design since primaries haven't been decided yet
+   - Only shows candidate name and description
+
+3. **✅ Reordered Tabs**
+   - **New order**: SWOT Analysis → Overview → Key Stats
+   - **Default tab**: SWOT Analysis (opens first)
+   - More engaging for voters to see strengths/weaknesses first
+
+**User Experience Benefits:**
+- 🎯 **Better discoverability**: Button is now obvious and inviting
+- 📱 **Mobile-friendly**: Larger touch target with clear text
+- 👴 **Accessibility**: Clear label helps all users understand functionality
+- 🔍 **Information hierarchy**: SWOT analysis gets prominence
+- 🎨 **Visual clarity**: Removed visual clutter from party badges
+
+Wait 2-3 minutes for deployment, then check the candidates page! The "View Details" button will be much more noticeable! 🚀
+
+---
+
+_**User (2025-10-01 05:49Z)**_
+
+great job!! now, when a voter votes, they can make a different vote using a new broser or incognito mode. how can this be solved
 
 ---
 

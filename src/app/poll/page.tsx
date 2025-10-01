@@ -112,6 +112,9 @@ export default function PollPage() {
         setIsSubmitted(true);
         // Store in localStorage to prevent multiple submissions
         localStorage.setItem("nakedtruth_voted", "true");
+        sessionStorage.setItem("nakedtruth_voted", "true");
+        // Set a cookie as additional layer
+        document.cookie = "nakedtruth_voted=true; max-age=604800; path=/; SameSite=Strict";
       } else {
         setSubmitError(result.error || "Failed to submit poll");
       }
@@ -123,7 +126,11 @@ export default function PollPage() {
   };
 
   // Check if user has already voted
-  if (typeof window !== 'undefined' && localStorage.getItem('nakedtruth_voted')) {
+  if (typeof window !== 'undefined' && (
+    localStorage.getItem('nakedtruth_voted') || 
+    sessionStorage.getItem('nakedtruth_voted') ||
+    document.cookie.includes('nakedtruth_voted=true')
+  )) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
         <Header currentPage="/poll" />
@@ -255,7 +262,7 @@ export default function PollPage() {
               Demographics
             </h2>
             <p className="text-gray-600 mb-6">
-              This information helps us understand different perspectives across Nigeria. 
+              This informationhelp s us understand different perspectives across Nigeria. 
               All responses remain completely anonymous.
             </p>
             

@@ -1,14 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { submitPollResponse } from '@/lib/database'
+import { submitPollResponse, generateFingerprint } from '@/lib/database'
 import { headers } from 'next/headers'
 
 export async function POST(request: NextRequest) {
   try {
-    // Get client IP address
+    // Get client IP address and user agent
     const headersList = await headers()
     const forwarded = headersList.get('x-forwarded-for')
     const realIP = headersList.get('x-real-ip')
     const ip = forwarded?.split(',')[0] || realIP || 'unknown'
+    const userAgent = headersList.get('user-agent') || ''
+    const acceptLanguage = headersList.get('accept-language') || 'en'
+    
+    // Generate browser fingerprint
+    const fingerprint = generateFingerprint(userAgent, acceptLanguage)
     
     // Parse request body
     const body = await request.json()
@@ -58,7 +63,8 @@ export async function POST(request: NextRequest) {
         region: demographics.region,
         gender: demographics.gender
       },
-      ip_address: ip
+      ip_address: ip,
+      fingerprint: fingerprint
     })
     
     if (!result.success) {

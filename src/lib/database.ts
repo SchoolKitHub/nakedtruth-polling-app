@@ -2,8 +2,14 @@ import { supabase, PollResponse } from './supabase'
 import crypto from 'crypto'
 
 // Hash IP address for anonymous duplicate prevention
-export function hashIP(ip: string): string {
-  return crypto.createHash('sha256').update(ip + 'nakedtruth-salt').digest('hex')
+export function hashIP(ip: string, fingerprint?: string): string {
+  const data = fingerprint ? `${ip}-${fingerprint}` : ip;
+  return crypto.createHash('sha256').update(data + 'nakedtruth-salt-2027').digest('hex');
+}
+
+// Generate browser fingerprint from user agent and other data
+export function generateFingerprint(userAgent: string, language: string = 'en'): string {
+  return crypto.createHash('md5').update(`${userAgent}-${language}`).digest('hex');
 }
 
 // Submit a poll response
@@ -16,22 +22,27 @@ export async function submitPollResponse(data: {
     gender: string
   }
   ip_address: string
+  fingerprint?: string
 }) {
   try {
-    // Hash the IP address for privacy
-    const ip_hash = hashIP(data.ip_address)
+    // Hash the IP address (with optional fingerprint) for privacy
+    const ip_hash = hashIP(data.ip_address, data.fingerprint)
     
-    // Check if this IP has already responded (prevent duplicates)
+    // Check if this IP/fingerprint combo has already responded in the last 7 days
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    
     const { data: existingResponse, error: checkError } = await supabase
       .from('responses')
-      .select('id')
+      .select('id, created_at')
       .eq('ip_hash', ip_hash)
-      .single()
+      .gte('created_at', sevenDaysAgo.toISOString())
+      .maybeSingle()
     
     if (existingResponse) {
       return { 
         success: false, 
-        error: 'You have already participated in this poll. Thank you for your contribution!' 
+        error: 'You have already participated in this poll recently. Thank you for your contribution!' 
       }
     }
     
