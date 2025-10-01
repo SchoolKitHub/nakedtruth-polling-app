@@ -46,10 +46,10 @@ export default function CandidateCard({ candidate, isSelected, onSelect, registe
         )}
         
         <div className="flex-1 min-w-0">
-          <h3 className="font-extrabold text-gray-900 text-xl tracking-tight">{candidate.name}</h3>
-          <p className="text-sm text-gray-600 mt-1.5 font-medium">{candidate.party}</p>
+          <h3 className="font-bold text-gray-900 text-base mb-2">{candidate.name}</h3>
+          <p className="text-xs text-gray-600 font-medium uppercase tracking-wide mb-2">{candidate.party}</p>
           {candidate.description && (
-            <p className="text-sm text-gray-500 mt-2 leading-relaxed">{candidate.description}</p>
+            <p className="text-sm text-gray-600 leading-loose">{candidate.description}</p>
           )}
         </div>
       </div>
