@@ -19,18 +19,19 @@ export default function CandidateCard({ candidate, isSelected, onSelect, registe
       }`}
       onClick={() => onSelect(candidate.id)}
     >
-      {/* Radio Input - Full Width Row */}
-      <div className="flex items-center justify-center mb-3">
-        <input
-          type="radio"
-          value={candidate.id}
-          {...register('presidential_candidate', { required: 'Please select a candidate preference' })}
-          className="w-5 h-5 text-blue-600 focus:ring-blue-500"
-        />
-      </div>
+      {/* Radio, Image and Content - Horizontal Layout */}
+      <div className="flex items-start gap-4">
+        {/* Radio Input - Aligned Left */}
+        <div className="flex items-center pt-1">
+          <input
+            type="radio"
+            value={candidate.id}
+            {...register('presidential_candidate', { required: 'Please select a candidate preference' })}
+            className="w-5 h-5 text-blue-600 focus:ring-blue-500"
+          />
+        </div>
 
-      {/* Image and Name - Full Width */}
-      <div className="flex items-center space-x-4 mb-3">
+        {/* Avatar Image */}
         {candidate.image ? (
           <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-gray-200 flex-shrink-0">
             <Image
@@ -49,18 +50,14 @@ export default function CandidateCard({ candidate, isSelected, onSelect, registe
           </div>
         )}
         
-        <div className="flex-1">
-          <h3 className="font-bold text-gray-900 text-base mb-1">{candidate.name}</h3>
-          <p className="text-xs text-gray-600 font-medium uppercase tracking-wide">{candidate.party}</p>
+        {/* Name and Description */}
+        <div className="flex-1 min-w-0">
+          <h3 className="font-bold text-gray-900 text-base mb-2">{candidate.name}</h3>
+          {candidate.description && (
+            <p className="text-sm text-gray-700 leading-relaxed">{candidate.description}</p>
+          )}
         </div>
       </div>
-      
-      {/* Description - Full Width */}
-      {candidate.description && (
-        <div className="mt-3">
-          <p className="text-sm text-gray-700 leading-loose w-full">{candidate.description}</p>
-        </div>
-      )}
     </label>
   );
 }

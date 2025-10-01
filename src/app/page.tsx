@@ -40,9 +40,11 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
             NakedTruth: Forecasting Nigeria&apos;s 2027 Elections
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Anonymous polling and data-driven insights ahead of Nigeria&apos;s 2027 presidential elections on February 27, 2027. 
-            Participate in our secure, transparent polling system to help forecast voter sentiment.
+          <p className="text-2xl font-semibold text-gray-900 mb-3 max-w-3xl mx-auto">
+            Anonymous Polling to Forecast Nigeria&apos;s 2027 Presidential Election
+          </p>
+          <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+            Secure • Transparent • Data-Driven Insights into Voter Expectations
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 

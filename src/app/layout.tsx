@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "NakedTruth - Forecasting Nigeria's 2027 Elections",
-  description: "Anonymous polling and data-driven insights ahead of Nigeria's 2027 presidential elections. Secure, transparent forecasting platform for voter sentiment analysis.",
+  description: "Anonymous Polling to Forecast Nigeria's 2027 Presidential Election. Secure • Transparent • Data-Driven Insights into Voter Expectations.",
   keywords: "Nigeria elections 2027, polling, forecasting, voter sentiment, INEC, presidential election, anonymous voting",
   authors: [{ name: "NakedTruth Team" }],
   creator: "NakedTruth",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "NakedTruth - Forecasting Nigeria's 2027 Elections",
-    description: "Anonymous polling and data-driven insights ahead of Nigeria's 2027 presidential elections",
+    description: "Anonymous Polling to Forecast Nigeria's 2027 Presidential Election. Secure • Transparent • Data-Driven Insights into Voter Expectations.",
     url: 'https://nakedtruth.com',
     siteName: 'NakedTruth',
     locale: 'en_NG',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "NakedTruth - Forecasting Nigeria's 2027 Elections",
-    description: "Anonymous polling and data-driven insights ahead of Nigeria's 2027 presidential elections",
+    description: "Anonymous Polling to Forecast Nigeria's 2027 Presidential Election. Secure • Transparent • Data-Driven Insights into Voter Expectations.",
     creator: '@nakedtruthng',
   },
   robots: {

@@ -263,6 +263,48 @@ export const presidentialCandidates: Candidate[] = [
     }
   },
   {
+    id: 'omoyele-sowore',
+    name: 'Omoyele Sowore',
+    party: 'AAC (African Action Congress)',
+    image: '/candidates/sowore.jpg',
+    description: 'Human rights activist, founder of Sahara Reporters, anti-corruption advocate',
+    fullDescription: 'Human rights activist, founder of Sahara Reporters, and presidential candidate known for his anti-corruption stance and voice of dissent. Represents the African Action Congress (AAC) with strong activist credentials and appeal among youth and Nigerians disillusioned with the status quo.',
+    position: 'Activist & Publisher',
+    votesIn2023: 'Small vote share (AAC candidate)',
+    keyStats: {
+      age: '54 by 2027',
+      experience: 'Founder of Sahara Reporters, Human Rights Activist, AAC Presidential Candidate',
+      region: 'South-West',
+      coalition: 'African Action Congress (AAC)'
+    },
+    swot: {
+      strengths: [
+        'Strong Activist Credentials: Well known for human rights activism, anti-corruption stance, and as a voice of dissent. Has credibility among youth and among Nigerians disillusioned with the status quo.',
+        'Vision & Policy Clarity: Has presented ideas around combating corruption, improving service delivery, technology, and transparency.',
+        'Consistency and Integrity: Refuses to compromise on certain principles (e.g., refusing coalitions with those he views as corrupt), which enhances his "authenticity" among some voters.',
+        'Media Platform & Exposure: As founder of Sahara Reporters and a known figure in media and activism, he has visibility that many smaller politicians don\'t have.'
+      ],
+      weaknesses: [
+        'Limited Political Structure: His party, the African Action Congress (AAC), has limited presence across many states, which weakens grassroots mobilization.',
+        'Poor Electoral Performance: In previous elections (2019 and 2023) he has gotten very small vote shares, suggesting low penetration into the electorate at large beyond his base.',
+        'Lack of Alliances: His refusal to work with some opposition figures or coalitions may isolate him politically, reducing his ability to bring a broad front.',
+        'Resource Constraints: Campaigns require money, logistics, and local party structures. Sowore is weaker here compared to major party candidates. Criticisms over finance transparency may affect trust among some.'
+      ],
+      opportunities: [
+        'Youth Discontent & Demand for Change: Nigeria has many young voters frustrated with corruption, infrastructure, jobs, and insecurity. If Sowore can tap this sentiment, he could expand his support.',
+        'Principled Alternative Positioning: Many voters are tired of compromise and "same old politics." Sowore\'s strong anti-establishment, anti-corruption message could be his differentiator.',
+        'Digital Organizing: With increasing internet penetration, even modest campaigns can have outsized visibility via digital platforms. Sowore\'s activist background helps here.',
+        'Outsider Appeal: As disillusionment with "traditional" politicians grows, outsider candidates may become more viable. If he can expand beyond urban, online, activist circles into more rural states, that can shift the balance.'
+      ],
+      threats: [
+        'Entrenched Political Establishment: Major parties and established politicians have deep resources, patronage networks, recognition, and can mobilize votes especially in rural areas.',
+        'Electoral System Biases: Issues like vote-buying, uneven media access, influence of powerful elites, and regional/ethnic bias could limit his effectiveness. Security challenges in certain regions can limit campaigning.',
+        'Public Perception Issues: While many see him as principled, some consider him radical or believe he lacks experience. Errors, misstatements, or controversies can damage credibility. His refusal to make alliances might be seen as stubbornness.',
+        'Opposition Fragmentation: If opposition remains split, Sowore may remain marginal unless he can unite or align in some way. Risk of suppression or harassment by authorities given his history.'
+      ]
+    }
+  },
+  {
     id: 'other',
     name: 'Other Candidate',
     party: 'Other',

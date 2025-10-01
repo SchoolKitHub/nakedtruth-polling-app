@@ -8,7 +8,7 @@ The **Advanced Candidate Gallery** is a comprehensive, dynamic media gallery tha
 
 ### 🎯 Core Functionality
 
-- **Comprehensive Candidate Profiles**: Detailed information for 8 major candidates
+- **Comprehensive Candidate Profiles**: Detailed information for 9 major candidates
 - **Dynamic SWOT Analysis**: In-depth strengths and weaknesses analysis
 - **Interactive Media Gallery**: Advanced filtering and search capabilities
 - **Real-time Poll Integration**: Optional display of current polling data
@@ -24,6 +24,7 @@ The **Advanced Candidate Gallery** is a comprehensive, dynamic media gallery tha
 6. **Seyi Makinde** (PDP) - Current Governor
 7. **Rotimi Amaechi** (Uncertain) - Former Governor & Minister
 8. **Bukola Saraki** (PDP) - Former Senate President
+9. **Omoyele Sowore** (AAC) - Human Rights Activist & Publisher
 
 ### 🔍 Advanced Features
 
