@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { presidentialCandidates } from '@/lib/candidates';
@@ -64,10 +65,23 @@ export default function DashboardPage() {
     fetchResults();
   }, []);
 
-  // Function to get candidate name from party name
-  const getCandidateName = (partyName: string) => {
-    const candidate = presidentialCandidates.find(c => c.party === partyName);
-    return candidate ? candidate.name : partyName;
+  // Function to get candidate data from party name or candidate name
+  const getCandidateData = (key: string) => {
+    // First try to match by party name
+    let candidate = presidentialCandidates.find(c => c.party === key);
+    
+    // If not found, try to match by candidate name (for cases like "Atiku Abubakar (ADC Coalition)")
+    if (!candidate) {
+      candidate = presidentialCandidates.find(c => key.includes(c.name));
+    }
+    
+    // Return candidate data or fallback
+    return candidate || { 
+      name: key.replace(/\s*\(.*?\)\s*/g, '').trim(), // Remove party in parentheses
+      image: '', 
+      party: key,
+      id: key 
+    };
   };
 
   if (loading) {
@@ -190,14 +204,36 @@ export default function DashboardPage() {
               🏛️ Presidential Candidates
             </h2>
             <div className="space-y-3">
-              {Object.entries(results.presidential_candidates).map(([partyName, votes]) => (
-                <div key={partyName} className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="font-medium">{getCandidateName(partyName)}</span>
-                  <span className="text-lg font-bold text-blue-600">
-                    {votes} votes ({((votes / results.total_responses) * 100).toFixed(1)}%)
-                  </span>
-                </div>
-              ))}
+              {Object.entries(results.presidential_candidates).map(([key, votes]) => {
+                const candidate = getCandidateData(key);
+                return (
+                  <div key={key} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div className="flex items-center space-x-3">
+                      <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 flex-shrink-0">
+                        {candidate.image ? (
+                          <Image
+                            src={candidate.image}
+                            alt={candidate.name}
+                            fill
+                            className="object-cover"
+                            sizes="40px"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                            <span className="text-white text-sm font-bold">
+                              {candidate.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <span className="font-medium text-gray-900">{candidate.name}</span>
+                    </div>
+                    <span className="text-lg font-bold text-blue-600">
+                      {votes} ({((votes / results.total_responses) * 100).toFixed(1)}%)
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
