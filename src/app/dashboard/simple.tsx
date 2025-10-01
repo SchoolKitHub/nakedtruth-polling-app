@@ -80,12 +80,12 @@ export default function DashboardPage() {
       'ADC': 'Atiku Abubakar',
       'ADC (African Democratic Congress)': 'Atiku Abubakar',
       'ADC Coalition': 'Atiku Abubakar',
-      'APGA': 'Other Candidate',
-      'APGA (All Progressives Grand Alliance)': 'Other Candidate',
-      'YPP': 'Other Candidate',
-      'YPP (Young Progressives Party)': 'Other Candidate',
-      'SDP': 'Other Candidate',
-      'SDP (Social Democratic Party)': 'Other Candidate',
+      'APGA': 'Seyi Makinde',
+      'APGA (All Progressives Grand Alliance)': 'Seyi Makinde',
+      'YPP': 'Rotimi Amaechi',
+      'YPP (Young Progressives Party)': 'Rotimi Amaechi',
+      'SDP': 'Bukola Saraki',
+      'SDP (Social Democratic Party)': 'Bukola Saraki',
     };
 
     // Check if it's a party abbreviation or full name
