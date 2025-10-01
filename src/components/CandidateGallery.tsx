@@ -63,6 +63,14 @@ export default function CandidateGallery({ showPollData = false, pollResults = {
     return 'bg-gray-100 text-gray-800 border-gray-200';
   };
 
+  const getButtonColor = (party: string) => {
+    if (party.includes('APC')) return 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800';
+    if (party.includes('PDP')) return 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800';
+    if (party.includes('ADC')) return 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800';
+    if (party.includes('NNPP')) return 'bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800';
+    return 'bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800';
+  };
+
   const getStrengthWeaknessIcon = (type: 'strength' | 'weakness') => {
     return type === 'strength' ? 
       <TrendingUp className="h-4 w-4 text-green-600 flex-shrink-0 mt-0.5" /> : 
@@ -81,7 +89,26 @@ export default function CandidateGallery({ showPollData = false, pollResults = {
       }`}>
         {/* Header */}
         <div className="p-6">
-          <div className="flex items-start space-x-4">
+          {/* Full Width Button */}
+          <button
+            onClick={() => toggleExpanded(candidate.id)}
+            className={`w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-lg text-white font-medium transition-all shadow-md hover:shadow-lg mb-4 ${getButtonColor(candidate.party)}`}
+          >
+            {isExpanded ? (
+              <>
+                <ChevronUp className="h-5 w-5" />
+                <span className="text-sm">Close</span>
+              </>
+            ) : (
+              <>
+                <Eye className="h-5 w-5" />
+                <span className="text-sm">View Details</span>
+              </>
+            )}
+          </button>
+
+          {/* Image and Name - Full Width */}
+          <div className="flex items-center space-x-4 mb-4">
             <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-gray-200 flex-shrink-0">
               {candidate.image ? (
                 <Image
@@ -100,39 +127,27 @@ export default function CandidateGallery({ showPollData = false, pollResults = {
               )}
             </div>
             
-            <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-bold text-gray-900 mb-3">{candidate.name}</h3>
-              <p className="text-gray-600 text-sm leading-loose text-left">{candidate.description}</p>
-              
-              {showPollData && pollVotes > 0 && (
-                <div className="mt-3 flex items-center space-x-4">
-                  <div className="flex items-center space-x-2">
-                    <BarChart3 className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm font-medium text-blue-600">
-                      {pollVotes} votes ({pollPercentage}%)
-                    </span>
-                  </div>
-                </div>
-              )}
+            <div className="flex-1">
+              <h3 className="text-lg font-bold text-gray-900">{candidate.name}</h3>
             </div>
-
-            <button
-              onClick={() => toggleExpanded(candidate.id)}
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors shadow-md hover:shadow-lg"
-            >
-              {isExpanded ? (
-                <>
-                  <ChevronUp className="h-5 w-5" />
-                  <span className="text-sm">Close</span>
-                </>
-              ) : (
-                <>
-                  <Eye className="h-5 w-5" />
-                  <span className="text-sm">View Details</span>
-                </>
-              )}
-            </button>
           </div>
+
+          {/* Description - Full Width */}
+          <div className="mb-4">
+            <p className="text-gray-700 text-sm leading-loose w-full">{candidate.description}</p>
+          </div>
+
+          {/* Poll Data */}
+          {showPollData && pollVotes > 0 && (
+            <div className="mb-4 flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <BarChart3 className="h-4 w-4 text-blue-600" />
+                <span className="text-sm font-medium text-blue-600">
+                  {pollVotes} votes ({pollPercentage}%)
+                </span>
+              </div>
+            </div>
+          )}
 
           {/* Quick Stats */}
           <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">

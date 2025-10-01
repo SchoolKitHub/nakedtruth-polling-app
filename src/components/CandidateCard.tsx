@@ -12,21 +12,25 @@ interface CandidateCardProps {
 export default function CandidateCard({ candidate, isSelected, onSelect, register }: CandidateCardProps) {
   return (
     <label 
-      className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md ${
+      className={`block p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md ${
         isSelected 
           ? 'border-blue-500 bg-blue-50 shadow-md' 
           : 'border-gray-200 hover:border-gray-300'
       }`}
       onClick={() => onSelect(candidate.id)}
     >
-      <input
-        type="radio"
-        value={candidate.id}
-        {...register('presidential_candidate', { required: 'Please select a candidate preference' })}
-        className="mr-4 text-blue-600 focus:ring-blue-500"
-      />
-      
-      <div className="flex items-center space-x-4 flex-1">
+      {/* Radio Input - Full Width Row */}
+      <div className="flex items-center justify-center mb-3">
+        <input
+          type="radio"
+          value={candidate.id}
+          {...register('presidential_candidate', { required: 'Please select a candidate preference' })}
+          className="w-5 h-5 text-blue-600 focus:ring-blue-500"
+        />
+      </div>
+
+      {/* Image and Name - Full Width */}
+      <div className="flex items-center space-x-4 mb-3">
         {candidate.image ? (
           <div className="w-16 h-16 relative rounded-full overflow-hidden border-2 border-gray-200 flex-shrink-0">
             <Image
@@ -45,14 +49,18 @@ export default function CandidateCard({ candidate, isSelected, onSelect, registe
           </div>
         )}
         
-        <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-gray-900 text-base mb-2">{candidate.name}</h3>
-          <p className="text-xs text-gray-600 font-medium uppercase tracking-wide mb-2">{candidate.party}</p>
-          {candidate.description && (
-            <p className="text-sm text-gray-600 leading-loose">{candidate.description}</p>
-          )}
+        <div className="flex-1">
+          <h3 className="font-bold text-gray-900 text-base mb-1">{candidate.name}</h3>
+          <p className="text-xs text-gray-600 font-medium uppercase tracking-wide">{candidate.party}</p>
         </div>
       </div>
+      
+      {/* Description - Full Width */}
+      {candidate.description && (
+        <div className="mt-3">
+          <p className="text-sm text-gray-700 leading-loose w-full">{candidate.description}</p>
+        </div>
+      )}
     </label>
   );
 }
