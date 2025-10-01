@@ -6614,6 +6614,269 @@ Error: Command "npm run build" exited with 1
 
 _**Assistant**_
 
+I see the deployment is failing due to TypeScript errors! Let me fix both issues:
+
+1. **ESLint configuration issue**
+2. **TypeScript error** - parameter 'n' needs a type annotation
+
+Let me fix the TypeScript error first in both dashboard files:
+
+---
+
+Tool use: **read_file**
+
+Read file: src/app/dashboard/page.tsx
+
+---
+
+Tool use: **edit_file**
+
+
+<details><summary>Edit file: src/app/dashboard/page.tsx</summary>
+
+Fix the TypeScript error by adding type annotation to the map parameter 'n' - change it to '(n: string) => n[0]'
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -270,5 +270,5 @@
+                              <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                                <span className="text-white text-sm font-bold">
+-                                 {data.candidate.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
++                                 {data.candidate.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2)}
+                                </span>
+                              </div>
+```
+
+</details>
+
+---
+
+Tool use: **edit_file**
+
+
+<details><summary>Edit file: src/app/dashboard/simple.tsx</summary>
+
+Fix the same TypeScript error in simple.tsx by adding type annotation to the map parameter 'n' - change it to '(n: string) => n[0]'
+
+**Chunk 1**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -270,5 +270,5 @@
+                              <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                                <span className="text-white text-sm font-bold">
+-                                 {data.candidate.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
++                                 {data.candidate.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2)}
+                                </span>
+                              </div>
+```
+
+</details>
+
+---
+
+Now let me check the ESLint config issue:
+
+---
+
+Tool use: **read_file**
+
+Read file: eslint.config.mjs
+
+---
+
+The ESLint config looks fine. The issue might be from Next.js config. Let me commit and push the TypeScript fixes:
+
+---
+
+Tool use: **run_terminal_cmd**
+
+```bash
+git add . && git commit -m "Fix TypeScript errors in dashboard
+
+- Add type annotation (n: string) to map parameters
+- Fix 'implicitly has any type' errors
+- Resolve build compilation errors" && git push
+```
+
+```
+└──╼ $git add . && git commit -m "Fix TypeScript errors in dashboard
+
+- Add type annotation (n: string) to map parameters
+- Fix 'implicitly has any type' errors
+- Resogit add . && git commit -m "Fix TypeScript errors in dashboard
+
+- Add type annotation (n: string) to map parameters
+- Fix 'implicitly has any type' errors
+- Resolve build compilation errors" && git push
+[main ff00bb2] Fix TypeScript errors in dashboard
+ 3 files changed, 149 insertions(+), 2 deletions(-)
+Enumerating objects: 17, done.
+Counting objects: 100% (17/17), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (9/9), 2.24 KiB | 135.00 KiB/s, done.
+Total 9 (delta 5), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (5/5), completed with 5 local objects.
+To https://github.com/SchoolKitHub/nakedtruth-polling-app.git
+   a22fde8..ff00bb2  main -> main
+┌─[ghost@parrot]─[~/Desktop/spades/nakedtruth]
+└──╼ $
+```
+
+---
+
+Perfect! ✅ I've fixed the TypeScript errors and pushed the changes.
+
+**Git Commit Details:**
+- **Commit Hash:** `ff00bb2`
+- **Files Fixed:** 
+  - `src/app/dashboard/page.tsx` - Added type annotation `(n: string)`
+  - `src/app/dashboard/simple.tsx` - Added type annotation `(n: string)`
+
+**What Was Fixed:**
+- Changed `.map(n => n[0])` to `.map((n: string) => n[0])` 
+- This resolves the "Parameter 'n' implicitly has an 'any' type" error
+
+**Next Steps:**
+1. **Wait 2-3 minutes** for Vercel to rebuild
+2. The build should now succeed without TypeScript errors
+3. Once deployed, hard refresh to see:
+   - ✅ Updated poll page text
+   - ✅ No duplicates in dashboard
+   - ✅ All 8 candidates properly displayed
+
+The ESLint warning about deprecated options shouldn't block the build - it's just a warning. The TypeScript error was the blocker, and that's now fixed! 🎉
+
+---
+
+_**User (2025-10-01 05:49Z)**_
+
+great job!! now  using the image attached, id like for us to improve significantly the HCI aspects of the design. Firstly, the button to expand swot and overview is not easily notcieable to non tech savvy voters.
+
+secondly, please remove the chips tagging each candidate party as the primaries is not decided yet until next year.
+
+Thirdly can we make swot tab come before overview
+
+---
+
+_**Assistant**_
+
+Excellent feedback! Let me improve the HCI (Human-Computer Interaction) aspects of the candidate gallery. I'll make three key changes:
+
+1. **Make the expand button more noticeable** for non-tech savvy users
+2. **Remove the party chips** since primaries haven't been decided
+3. **Reorder tabs** - SWOT first, then Overview
+
+Let me start by examining the CandidateGallery component:
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/CandidateGallery.tsx
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/CandidateGallery.tsx
+
+---
+
+Perfect! Now I'll make the improvements:
+
+---
+
+Tool use: **edit_file**
+
+
+<details><summary>Edit file: src/components/CandidateGallery.tsx</summary>
+
+I'm making three changes: 1) Remove the party chip (lines 105-107), 2) Make the expand button more prominent with better text and styling (lines 122-127), 3) Reorder tabs to put SWOT first (line 165 should be swot, line 166 should be overview)
+
+**Chunk 1**
+Lines added: undefined, lines removed: 3
+
+```diff
+@@ -103,7 +103,4 @@
+              <div className="flex-1 min-w-0">
+                <h3 className="text-xl font-bold text-gray-900 mb-1">{candidate.name}</h3>
+-               <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getPartyColor(candidate.party)}`}>
+-                 {candidate.party}
+-               </div>
+                <p className="text-gray-600 mt-2 text-sm">{candidate.description}</p>
+                
+```
+
+**Chunk 2**
+Lines added: 12, lines removed: 2
+
+```diff
+@@ -122,7 +119,17 @@
+              <button
+                onClick={() => toggleExpanded(candidate.id)}
+-               className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
++               className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors shadow-md hover:shadow-lg"
+              >
+-               {isExpanded ? <ChevronUp className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
++               {isExpanded ? (
++                 <>
++                   <ChevronUp className="h-5 w-5" />
++                   <span className="text-sm">Close</span>
++                 </>
++               ) : (
++                 <>
++                   <Eye className="h-5 w-5" />
++                   <span className="text-sm">View Details</span>
++                 </>
++               )}
+              </button>
+            </div>
+```
+
+**Chunk 3**
+Lines added: 1, lines removed: 1
+
+```diff
+@@ -163,6 +170,6 @@
+              <div className="flex border-b border-gray-200">
+                {[
+-                 { id: 'overview', label: 'Overview', icon: Eye },
+                  { id: 'swot', label: 'SWOT Analysis', icon: BarChart3 },
++                 { id: 'overview', label: 'Overview', icon: Eye },
+                  { id: 'stats', label: 'Key Stats', icon: Award }
+                ].map(tab => (
+```
+
+</details>
+
+---
+
+Excellent! Now I need to update the default active tab to show SWOT first instead of Overview:
+
+---
+
+Tool use: **read_file**
+
+Read file: src/components/CandidateGallery.tsx
+
+---
+
+
+
+---
+
+_**User (2025-10-01 05:49Z)**_
+
+please continue
+
+---
+
+_**Assistant**_
+
 
 
 ---

@@ -16,7 +16,7 @@ export default function CandidateGallery({ showPollData = false, pollResults = {
   const [selectedParty, setSelectedParty] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'overview' | 'swot' | 'stats'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'swot' | 'stats'>('swot');
 
   // Filter candidates based on search and filters
   const filteredCandidates = useMemo(() => {
@@ -102,9 +102,6 @@ export default function CandidateGallery({ showPollData = false, pollResults = {
             
             <div className="flex-1 min-w-0">
               <h3 className="text-xl font-bold text-gray-900 mb-1">{candidate.name}</h3>
-              <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getPartyColor(candidate.party)}`}>
-                {candidate.party}
-              </div>
               <p className="text-gray-600 mt-2 text-sm">{candidate.description}</p>
               
               {showPollData && pollVotes > 0 && (
@@ -121,9 +118,19 @@ export default function CandidateGallery({ showPollData = false, pollResults = {
 
             <button
               onClick={() => toggleExpanded(candidate.id)}
-              className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+              className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors shadow-md hover:shadow-lg"
             >
-              {isExpanded ? <ChevronUp className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {isExpanded ? (
+                <>
+                  <ChevronUp className="h-5 w-5" />
+                  <span className="text-sm">Close</span>
+                </>
+              ) : (
+                <>
+                  <Eye className="h-5 w-5" />
+                  <span className="text-sm">View Details</span>
+                </>
+              )}
             </button>
           </div>
 
@@ -162,8 +169,8 @@ export default function CandidateGallery({ showPollData = false, pollResults = {
             {/* Tab Navigation */}
             <div className="flex border-b border-gray-200">
               {[
-                { id: 'overview', label: 'Overview', icon: Eye },
                 { id: 'swot', label: 'SWOT Analysis', icon: BarChart3 },
+                { id: 'overview', label: 'Overview', icon: Eye },
                 { id: 'stats', label: 'Key Stats', icon: Award }
               ].map(tab => (
                 <button
