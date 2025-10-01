@@ -101,8 +101,8 @@ export default function CandidateGallery({ showPollData = false, pollResults = {
             </div>
             
             <div className="flex-1 min-w-0">
-              <h3 className="text-xl font-bold text-gray-900 mb-1">{candidate.name}</h3>
-              <p className="text-gray-600 mt-2 text-sm">{candidate.description}</p>
+              <h3 className="text-2xl font-extrabold text-gray-900 mb-2 tracking-tight">{candidate.name}</h3>
+              <p className="text-gray-600 mt-3 text-base leading-relaxed">{candidate.description}</p>
               
               {showPollData && pollVotes > 0 && (
                 <div className="mt-3 flex items-center space-x-4">
