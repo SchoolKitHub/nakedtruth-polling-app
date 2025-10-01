@@ -269,7 +269,7 @@ export default function DashboardPage() {
                           ) : (
                             <div className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
                               <span className="text-white text-sm font-bold">
-                                {data.candidate.name.split(' ').map(n => n[0]).join('').substring(0, 2)}
+                                {data.candidate.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2)}
                               </span>
                             </div>
                           )}
