@@ -67,17 +67,47 @@ export default function DashboardPage() {
 
   // Function to get candidate data from party name or candidate name
   const getCandidateData = (key: string) => {
-    // First try to match by party name
+    // Party abbreviation to candidate mapping
+    const partyMap: Record<string, string> = {
+      'LP': 'Peter Obi',
+      'LP (Labour Party)': 'Peter Obi',
+      'APC': 'Bola Ahmed Tinubu',
+      'APC (All Progressives Congress)': 'Bola Ahmed Tinubu',
+      'PDP': 'Goodluck Jonathan',
+      'PDP (Peoples Democratic Party)': 'Goodluck Jonathan',
+      'NNPP': 'Rabiu Musa Kwankwaso',
+      'NNPP (New Nigeria Peoples Party)': 'Rabiu Musa Kwankwaso',
+      'ADC': 'Atiku Abubakar',
+      'ADC (African Democratic Congress)': 'Atiku Abubakar',
+      'ADC Coalition': 'Atiku Abubakar',
+      'APGA': 'Other Candidate',
+      'APGA (All Progressives Grand Alliance)': 'Other Candidate',
+      'YPP': 'Other Candidate',
+      'YPP (Young Progressives Party)': 'Other Candidate',
+      'SDP': 'Other Candidate',
+      'SDP (Social Democratic Party)': 'Other Candidate',
+    };
+
+    // Check if it's a party abbreviation or full name
+    const mappedName = partyMap[key];
+    
+    // First try to find by mapped name
+    if (mappedName) {
+      const candidate = presidentialCandidates.find(c => c.name === mappedName);
+      if (candidate) return candidate;
+    }
+    
+    // Try to match by party name
     let candidate = presidentialCandidates.find(c => c.party === key);
     
-    // If not found, try to match by candidate name (for cases like "Atiku Abubakar (ADC Coalition)")
+    // If not found, try to match by candidate name
     if (!candidate) {
       candidate = presidentialCandidates.find(c => key.includes(c.name));
     }
     
     // Return candidate data or fallback
     return candidate || { 
-      name: key.replace(/\s*\(.*?\)\s*/g, '').trim(), // Remove party in parentheses
+      name: key.replace(/\s*\(.*?\)\s*/g, '').trim(),
       image: '', 
       party: key,
       id: key 
