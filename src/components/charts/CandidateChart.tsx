@@ -36,7 +36,7 @@ export function CandidateChart({ data, totalResponses }: CandidateChartProps) {
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>
             <Pie
-              data={data}
+              data={data as any}
               cx="50%"
               cy="50%"
               outerRadius={100}
@@ -57,7 +57,7 @@ export function CandidateChart({ data, totalResponses }: CandidateChartProps) {
       <div>
         <h3 className="text-lg font-medium text-gray-700 mb-4 text-center">Vote Count</h3>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={data}>
+          <BarChart data={data as any}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} />
             <YAxis />

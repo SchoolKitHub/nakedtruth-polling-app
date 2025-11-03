@@ -1,9 +1,32 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''
+const rawKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? ''
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Avoid creating a Supabase client with placeholder or missing env vars at module load time
+// which causes `Invalid URL` errors during Next build. If the env vars are not provided
+// (for local builds using the example .env), export a small stub that returns errors.
+let _supabase: SupabaseClient | null = null
+
+const looksLikePlaceholder = (v: string) => v.includes('your_supabase') || v.trim() === ''
+
+if (!looksLikePlaceholder(rawUrl) && !looksLikePlaceholder(rawKey)) {
+  _supabase = createClient(rawUrl, rawKey)
+} else {
+  // Lightweight stub: chainable `from()` returning methods that resolve to an error-like shape.
+  _supabase = {
+    from: () => ({
+      select: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
+      insert: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
+      maybeSingle: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
+      single: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
+      eq: () => ({ select: async () => ({ data: null, error: { message: 'Supabase not configured' } }) }),
+      gte: () => ({ select: async () => ({ data: null, error: { message: 'Supabase not configured' } }) }),
+    }),
+  } as unknown as SupabaseClient
+}
+
+export const supabase = _supabase as SupabaseClient
 
 // Types for our database tables
 export interface Poll {
